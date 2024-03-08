@@ -77,7 +77,7 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "SY89297U", "MCP23S17", "Option 3"]
+        options = ["Select", "SY89297U", "MCP23S17"]
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
@@ -131,7 +131,7 @@ class delayProgramator_app(tk.Tk):
                                     message="Selected chip has not been initialized.")
             return
 
-        select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
+        select_delayline_msg = tk.Message(setts_page,
             text="Select chip: ", 
             width=120,
             bg=light_gray,
@@ -350,7 +350,7 @@ class delayProgramator_app(tk.Tk):
         def confirm_value(num):
             # print(self.chip.get_name())
             if self.chip.get_name() == "SY89297U":
-                if (self.unit == "ps" and self.pulse_width > 5000):
+                if ((self.unit == "ps" or self.unit == "") and self.pulse_width > 5000):
                     messagebox.showwarning(title="Delay out of bounds.", 
                                            message="The delay you try to set is too long. Maximum delay is 5 ns.")
                     self.pulse_width = 0
@@ -366,7 +366,7 @@ class delayProgramator_app(tk.Tk):
                     pass
             
             elif self.chip.get_name() == "MCP23S17":
-                if (self.unit == "ps" and self.pulse_width > 8695):
+                if ((self.unit == "ps" or self.unit == "") and self.pulse_width > 8695):
                     messagebox.showwarning(title="Delay out of bounds.", 
                                            message="The delay you try to set is too long. Maximum delay is 8,695 ns.")
                     self.pulse_width = 0
@@ -497,6 +497,8 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 1)
             
             self.set_left = 0
+            self.delay_left = 0
+            self.unit_left = ""
             self.pw_button_left['text'] = "Delay"
 
         if num == 1:
@@ -517,11 +519,12 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 1)
 
             self.set_right = 0
+            self.delay_right = 0
+            self.unit_right = ""
             self.pw_button_right['text'] = "Delay"
 
         self.pulse_width = 0
         self.unit = ""       
-        self.select_index = 0
 
         return   
 
