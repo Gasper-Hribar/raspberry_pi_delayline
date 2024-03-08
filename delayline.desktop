@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=Delayline
+GenericName=Delayline programator
+Exec=python /home/pi/Documents/DelayLine/main.py
+Terminal=false
+Icon=/home/pi/Documents/DelayLine/delayline_icon.png
+Type=Application
+Categories=Application;Network;
+Comment=Delayline programator 
