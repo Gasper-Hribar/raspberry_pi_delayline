@@ -77,7 +77,7 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "SY89297U", "MCP23S17"]
+        options = ["Select", "SY89297U", "MCP23S17", "Option 3"]
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
@@ -131,7 +131,7 @@ class delayProgramator_app(tk.Tk):
                                     message="Selected chip has not been initialized.")
             return
 
-        select_delayline_msg = tk.Message(setts_page,
+        select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
             text="Select chip: ", 
             width=120,
             bg=light_gray,
@@ -350,7 +350,7 @@ class delayProgramator_app(tk.Tk):
         def confirm_value(num):
             # print(self.chip.get_name())
             if self.chip.get_name() == "SY89297U":
-                if ((self.unit == "ps" or self.unit == "") and self.pulse_width > 5000):
+                if (self.unit == "ps" and self.pulse_width > 5000):
                     messagebox.showwarning(title="Delay out of bounds.", 
                                            message="The delay you try to set is too long. Maximum delay is 5 ns.")
                     self.pulse_width = 0
@@ -366,7 +366,7 @@ class delayProgramator_app(tk.Tk):
                     pass
             
             elif self.chip.get_name() == "MCP23S17":
-                if ((self.unit == "ps" or self.unit == "") and self.pulse_width > 8695):
+                if (self.unit == "ps" and self.pulse_width > 8695):
                     messagebox.showwarning(title="Delay out of bounds.", 
                                            message="The delay you try to set is too long. Maximum delay is 8,695 ns.")
                     self.pulse_width = 0
@@ -397,6 +397,7 @@ class delayProgramator_app(tk.Tk):
             self.pulse_width = 0
             self.unit = ""
             set_pulse.destroy()
+            self.set_delay(num)
 
         def add_to_value(val):
             if self.unit != "":
@@ -442,7 +443,7 @@ class delayProgramator_app(tk.Tk):
 
                 if num == 0:
                     writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1)
-                    # print(f"SPI left: {[bin(x) for x in writeval]}.")
+                    print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
                     rpi.write(self.CS, 0)
@@ -451,7 +452,7 @@ class delayProgramator_app(tk.Tk):
 
                 if num == 1:
                     writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0)
-                    # print(f"SPI right: {[bin(x) for x in writeval]}.")
+                    print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
                     rpi.write(self.CS, 0)
@@ -480,51 +481,23 @@ class delayProgramator_app(tk.Tk):
     def reset_delay(self, num):
         """ Resetting the delays to 0."""
         if num == 0:
-            if self.chip.get_name() == "SY89297U":
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, data=[0, 0, 0])
-                
-                rpi.write(self.SLOAD, 1)
-                rpi.write(self.SLOAD, 0)
-                rpi.write(self.CS, 1)
-
-            elif self.chip.get_name() == "MCP23S17":
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[0:4])
-                rpi.write(self.CS, 1)
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[4:])
-                rpi.write(self.CS, 1)
-            
-            self.set_left = 0
-            self.delay_left = 0
+            self.delay_left = 0            
             self.unit_left = ""
-            self.pw_button_left['text'] = "Delay"
+            self.set_delay(num)
+            self.set_left = 0
+            self.pw_str_left.set("Delay")
+            self.pw_button_left['text'] = self.pw_str_left.get()
 
         if num == 1:
-            if self.chip.get_name() == "SY89297U":
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, data=[0, 0, 0])
-                
-                rpi.write(self.SLOAD, 1)
-                rpi.write(self.SLOAD, 0)
-                rpi.write(self.CS, 1)
-                
-            elif self.chip.get_name() == "MCP23S17":            
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[0:4])
-                rpi.write(self.CS, 1)
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[4:])
-                rpi.write(self.CS, 1)
-
-            self.set_right = 0
             self.delay_right = 0
-            self.unit_right = ""
-            self.pw_button_right['text'] = "Delay"
+            self.unit_right = 0
+            self.set_delay(num)
+            self.set_right = 0
+            self.pw_str_right.set("Delay")
+            self.pw_button_right['text'] = self.pw_str_right.get()
 
         self.pulse_width = 0
-        self.unit = ""       
+        self.unit = ""
 
         return   
 
@@ -608,19 +581,6 @@ class delayProgramator_app(tk.Tk):
                                   relwidth=0.9,
                                   anchor='center')
 
-        self.set_pw_button_left = tk.Button(self.pulse_frame_left,
-                                            height=1,
-                                            fg=space_blue,
-                                            bg=light_gray,
-                                            font=normal,
-                                            text="SET",
-                                            relief='flat',
-                                            command=lambda: self.set_delay(0))
-        self.set_pw_button_left.place(relx=0.25,
-                                      rely=0.75,
-                                      relwidth=0.4,
-                                      anchor='center')
-        
         self.reset_pw_button_left = tk.Button(self.pulse_frame_left,
                                               height=1,
                                               fg=space_blue,
@@ -629,7 +589,7 @@ class delayProgramator_app(tk.Tk):
                                               text="RESET",
                                               relief='flat',
                                               command=lambda: self.reset_delay(0))
-        self.reset_pw_button_left.place(relx=0.75,
+        self.reset_pw_button_left.place(relx=0.5,
                                       rely=0.75,
                                       relwidth=0.4,
                                       anchor='center')
@@ -673,19 +633,6 @@ class delayProgramator_app(tk.Tk):
                                   relwidth=0.9,
                                   anchor='center')
 
-        self.set_pw_button_right = tk.Button(self.pulse_frame_right,
-                                            height=1,
-                                            fg=space_blue,
-                                            bg=light_gray,
-                                            font=normal,
-                                            text="SET",
-                                            relief='flat',
-                                            command=lambda: self.set_delay(1))
-        self.set_pw_button_right.place(relx=0.25,
-                                      rely=0.75,
-                                      relwidth=0.4,
-                                      anchor='center')
-        
         self.reset_pw_button_right = tk.Button(self.pulse_frame_right,
                                               height=1,
                                               fg=space_blue,
@@ -694,7 +641,7 @@ class delayProgramator_app(tk.Tk):
                                               text="RESET",
                                               relief='flat',
                                               command=lambda: self.reset_delay(1))
-        self.reset_pw_button_right.place(relx=0.75,
+        self.reset_pw_button_right.place(relx=0.5,
                                       rely=0.75,
                                       relwidth=0.4,
                                       anchor='center')
@@ -712,7 +659,7 @@ class delayProgramator_app(tk.Tk):
 
         # SPI
         global hspi
-        self.hspi = rpi.spi_open(0, 100000)  # initialize SPI with 10 MHz freq in mode 0
+        self.hspi = rpi.spi_open(0, 100000)  # initialize SPI with 1 MHz freq in mode 0
         self.CS = 9
         self.SLOAD = 25
         rpi.set_mode(self.SLOAD, OUTPUT)
@@ -729,7 +676,7 @@ class delayProgramator_app(tk.Tk):
         self.configure(bg=space_blue)
         self.chip = SY89297U()
 
-        # create widget
+        # create widgets
         self.create_widgets()
 
 ###### 
