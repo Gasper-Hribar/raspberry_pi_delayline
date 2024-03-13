@@ -3,9 +3,11 @@
 from pigpio import *
 import tkinter as tk
 import os
+import sys
 import tkinter.messagebox as messagebox
 from delayline import *
 import time
+import updateService
 
 # os.system("sudo pigpiod")
 # time.sleep(0.01)
@@ -45,6 +47,14 @@ white_ish = '#e1e5ee'
 # pi() object initialization
 rpi = pi()
 # END
+
+def restart_program():
+    """
+    Restarts the current program.
+    Note: this function does not return. Any cleanup action (like saving data) must be done before calling this function.
+    """
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 class delayProgramator_app(tk.Tk):
 
@@ -664,6 +674,12 @@ class delayProgramator_app(tk.Tk):
 
         tk.Tk.__init__(self)  # self = root window
 
+        if updateService.is_branch_behind():
+            update = messagebox.askyesno(title="New version available", message="New version od this app is available. Do you want to update now?")
+            if update:
+                updateService.git_pull()
+                restart_program()
+                
         # SPI
         global hspi
         self.hspi = rpi.spi_open(0, 100000)  # initialize SPI with 1 MHz freq in mode 0
