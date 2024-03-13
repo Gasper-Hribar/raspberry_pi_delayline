@@ -149,11 +149,11 @@ class MCP23S17(DelayLine):
         """
         Returns a value to write to the MCP to forward it to the SZ100EP195B (V).
 
-        Step of the programmable delay is approximately 8.5 ps (10756 - 2070) / 2**10. 
+        Step of the programmable delay is 10 ps (12230 - 2000) / 2**10. 
         """
         
         ps_value = value * 1000 if unit else value
-        retval = int(ps_value / 8.5) & 1023
+        retval = int(ps_value / 10) & 1023
         retval = retval | 1 << MCP23S17.LEN0_BIT | 1 << MCP23S17.LEN1_BIT 
         # print(f"Retval: {retval}, {bin(retval)}.")
 

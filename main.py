@@ -16,8 +16,8 @@ if os.environ.get('DISPLAY','') == '':
 # START
 # definition of fonts
 normal = "Lato 18"
-titles = "Lato 20"
-outputfont = "Lato 36 bold"
+titles = "Lato 22"
+outputfont = "Lato 24 bold"
 outputminifont = "Lato 16 bold"
 normalminifont = "Lato 16"
 menufont = "Lato 16 bold"
@@ -77,24 +77,54 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "SY89297", "Option 2", "Option 3"]
+        options = ["Select", "SY89297U", "MCP23S17", "Option 3"]
         selected_var = tk.StringVar(setts_page)
-        selected_var.set(options[0])
+        selected_var.set(options[self.select_index])
 
         def select_chip(chip):
-            if chip == "SY89297":
+            if chip == "SY89297U":
                 try:
                     del self.chip
                 except:
                     pass
                 self.chip = SY89297U()
+                self.select_index = 1
+
+            elif chip == "MCP23S17":
+                try:
+                    del self.chip
+                except:
+                    pass
+                rpi.write(self.CS, 0)
+                self.chip = MCP23S17(0)
+                rpi.spi_write(self.hspi, self.chip.setIO())
+                rpi.write(self.CS, 1)
+                time.sleep(0.1)
+
+                """ Opening the line. Setting the delay to 0. """
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[0:4])
+                rpi.write(self.CS, 1)
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[4:])
+                rpi.write(self.CS, 1)
+                
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[0:4])
+                rpi.write(self.CS, 1)
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[4:])
+                rpi.write(self.CS, 1)
+
+                self.select_index = 2
+                
 
             elif chip == "Select":
                 try:
                     del self.chip
                 except:
                     pass
-                pass
+                self.select_index = 0
 
             else:
                 messagebox.showinfo(title="Chip not initialized.", 
@@ -156,7 +186,7 @@ class delayProgramator_app(tk.Tk):
             bg=white_ish,
             relief='flat')
 
-        set_pulse.title('.')
+        set_pulse.title('Set delay')
         set_pulse.geometry(f'247x210+277+140')
 
         pw = tk.Label(set_pulse,
@@ -294,7 +324,7 @@ class delayProgramator_app(tk.Tk):
             font=settingsfont,
             justify='center',
             text='ok',
-            width=10,
+            width=11,
             height=2,
             command=lambda: confirm_value(num))
 
@@ -318,22 +348,56 @@ class delayProgramator_app(tk.Tk):
             self.unit = unit
 
         def confirm_value(num):
+            # print(self.chip.get_name())
+            if self.chip.get_name() == "SY89297U":
+                if (self.unit == "ps" and self.pulse_width > 5000):
+                    messagebox.showwarning(title="Delay out of bounds.", 
+                                           message="The delay you try to set is too long. Maximum delay is 5 ns.")
+                    self.pulse_width = 0
+                    self.unit = ""
+                    return
+                if (self.unit == "ns" and self.pulse_width > 5):
+                    messagebox.showwarning(title="Delay out of bounds.", 
+                                           message="The delay you try to set is too long. Maximum delay is 5 ns.")
+                    self.pulse_width = 0
+                    self.unit = ""
+                    return
+                else:
+                    pass
+            
+            elif self.chip.get_name() == "MCP23S17":
+                if (self.unit == "ps" and self.pulse_width > 10230):
+                    messagebox.showwarning(title="Delay out of bounds.", 
+                                           message="The delay you try to set is too long. Maximum delay is 10,230 ns.")
+                    self.pulse_width = 0
+                    self.unit = ""
+                    return
+                if (self.unit == "ns" and self.pulse_width > 10):
+                    messagebox.showwarning(title="Delay out of bounds.", 
+                                           message="The delay you try to set is too long. Maximum delay is 10,230 ns.")
+                    self.pulse_width = 0
+                    self.unit = ""
+                    return
+                else:
+                    pass
+                    
+            
             if num == 0:
-                self.pw_str_left.set(f'{self.pulse_width} {self.unit}') 
-                self.delay_left = self.pulse_width
                 self.unit_left = self.unit
-            elif num == 1:
-                self.pw_str_right.set(f'{self.pulse_width} {self.unit}')
-                self.delay_right = self.pulse_width
+                self.pw_str_left.set(f'{self.pulse_width} {self.unit_left}') 
+                self.delay_left = self.pulse_width
+                self.set_left = 1
+            elif num == 1:                
                 self.unit_right = self.unit
+                self.pw_str_right.set(f'{self.pulse_width} {self.unit_right}')
+                self.delay_right = self.pulse_width
+                self.set_right = 1
 
-            """
-            MANJKA KODA!!
-            """
             self.update_widgets()
             self.pulse_width = 0
             self.unit = ""
             set_pulse.destroy()
+            self.set_delay(num)
 
         def add_to_value(val):
             if self.unit != "":
@@ -351,39 +415,55 @@ class delayProgramator_app(tk.Tk):
     def set_delay(self, num):
 
         try:
-            if self.chip.get_name() == "SY89297":
-                latch_A = 0x0
-                latch_B = 0x0
-                print("latching")
+            if self.chip.get_name() == "SY89297U":
+                latch_A = 0x00
+                latch_B = 0x00
+
                 latch_A = self.chip.calc_delay(self.delay_left, self.unit_left == "ns")
-                print(latch_A)
                 latch_A = self.chip.define_latch_A(latch_A)
-                print(latch_A)
 
-                print(self.delay_right)
                 latch_B = self.chip.calc_delay(self.delay_right, self.unit_right == "ns")
-                print(latch_B)
                 latch_B = self.chip.define_latch_B(latch_B)
-                print(latch_B)
 
-
-                data = (latch_B | latch_A) & self.tbits
-                print(data)
                 first_byte = (latch_B >> 6) & 0b1111
                 second_byte = ((latch_B & (2**6-1))<<2) | ((latch_A >> 8) & (2**2-1))
                 third_byte = latch_A & 0b11111111
-                # data_binary = data.zfill(20)
                 rpi.write(self.CS, 0)
-                print(hex(first_byte), "  ", hex(second_byte), "  ", hex(third_byte), "  \n")
                 rpi.spi_write(self.hspi, data=[first_byte, second_byte, third_byte])
                 
                 rpi.write(self.SLOAD, 1)
                 rpi.write(self.SLOAD, 0)
                 rpi.write(self.CS, 1)
-                print("written")
-                data = 0
+
+            elif self.chip.get_name() == "MCP23S17":
+                latch_A = 0x00
+                latch_B = 0x00
+
+                rpi.write(self.CS, 0)
+
+                if num == 0:
+                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1)
+                    print(f"SPI left: {[bin(x) for x in writeval]}.")
+                    rpi.spi_write(self.hspi, writeval[0:4])
+                    rpi.write(self.CS, 1)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[4:])
+                    self.set_left = 0
+
+                if num == 1:
+                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0)
+                    print(f"SPI right: {[bin(x) for x in writeval]}.")
+                    rpi.spi_write(self.hspi, writeval[0:4])
+                    rpi.write(self.CS, 1)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[4:])
+                    self.set_right = 0
+                
+                rpi.write(self.CS, 1)
+                
             else:
-                print(self.chip)
+                # print(self.chip)
+                pass
         except AttributeError:
             messagebox.showerror(title="Invalid chip",
                                  message="The selected delay line chip is not valid.")
@@ -399,10 +479,25 @@ class delayProgramator_app(tk.Tk):
 ###### RESET DELAY FUNCTION
             
     def reset_delay(self, num):
+        """ Resetting the delays to 0."""
+        if num == 0:
+            self.delay_left = 0            
+            self.unit_left = ""
+            self.set_delay(num)
+            self.set_left = 0
+            self.pw_str_left.set("Delay")
+            self.pw_button_left['text'] = self.pw_str_left.get()
+
+        if num == 1:
+            self.delay_right = 0
+            self.unit_right = 0
+            self.set_delay(num)
+            self.set_right = 0
+            self.pw_str_right.set("Delay")
+            self.pw_button_right['text'] = self.pw_str_right.get()
+
         self.pulse_width = 0
         self.unit = ""
-        self.pw_button_left['text'] = "Delay"
-        self.pw_button_right['text'] = "Delay"
 
         return   
 
@@ -413,20 +508,10 @@ class delayProgramator_app(tk.Tk):
 
     def create_widgets(self):
         """      
-        Adds labels and text widgets to frames.
+        Adds frames, labels and text widgets to frames.
 
-        Initializes SPI.
         """
 
-        global hspi
-        self.hspi = rpi.spi_open(0, 1000000)  # initialize SPI with 10 MHz freq in mode 0
-        self.CS = 9
-        self.SLOAD = 25
-        rpi.set_mode(self.SLOAD, OUTPUT)
-        rpi.set_mode(self.CS, OUTPUT)
-        rpi.write(self.SLOAD, 0)
-        rpi.write(self.CS, 1) 
-        
         self.pw_str_left = tk.StringVar(self, value="Delay")
         self.pw_str_right = tk.StringVar(self, value="Delay")
         self.tbits = 0x3ffff
@@ -434,6 +519,9 @@ class delayProgramator_app(tk.Tk):
         self.delay_right = 0
         self.unit_left = ""
         self.unit_right = ""
+        self.set_left = 0
+        self.set_right = 0
+        self.select_index = 0
 
         (self.width, self.height) = (self.winfo_width(), self.winfo_height())  # get self.width and self.height of screen in pixels
 
@@ -468,7 +556,7 @@ class delayProgramator_app(tk.Tk):
                                     relheight=0.90)
         
         self.pw_label_left = tk.Label(self.pulse_frame_left,
-                                          text='DELAY LINE 1',
+                                          text='DELAY LINE A',
                                           font=titles,
                                           fg=space_blue,
                                           bg=light_gray,
@@ -476,7 +564,7 @@ class delayProgramator_app(tk.Tk):
                                           height=20,
                                           width=20)
         self.pw_label_left.place(relx=0.5, 
-                                 rely=0.05, 
+                                 rely=0.1, 
                                  anchor='center')
         
         self.pw_button_left = tk.Button(self.pulse_frame_left,
@@ -484,28 +572,15 @@ class delayProgramator_app(tk.Tk):
                                         height=1,
                                         fg=space_blue,
                                         bg=white_ish,
-                                        font=normal,
+                                        font=outputfont,
                                         text=self.pw_str_left.get(),
                                         relief='flat',
                                         command=lambda: self.set_delayval(0))
         self.pw_button_left.place(relx=0.5,
-                                  rely=0.35,
+                                  rely=0.45,
                                   relwidth=0.9,
                                   anchor='center')
 
-        self.set_pw_button_left = tk.Button(self.pulse_frame_left,
-                                            height=1,
-                                            fg=space_blue,
-                                            bg=light_gray,
-                                            font=normal,
-                                            text="SET",
-                                            relief='flat',
-                                            command=lambda: self.set_delay(0))
-        self.set_pw_button_left.place(relx=0.25,
-                                      rely=0.6,
-                                      relwidth=0.4,
-                                      anchor='center')
-        
         self.reset_pw_button_left = tk.Button(self.pulse_frame_left,
                                               height=1,
                                               fg=space_blue,
@@ -514,8 +589,8 @@ class delayProgramator_app(tk.Tk):
                                               text="RESET",
                                               relief='flat',
                                               command=lambda: self.reset_delay(0))
-        self.reset_pw_button_left.place(relx=0.75,
-                                      rely=0.6,
+        self.reset_pw_button_left.place(relx=0.5,
+                                      rely=0.75,
                                       relwidth=0.4,
                                       anchor='center')
         
@@ -533,7 +608,7 @@ class delayProgramator_app(tk.Tk):
                                     relheight=0.90)
         
         self.pw_label_right = tk.Label(self.pulse_frame_right,
-                                          text='DELAY LINE 2',
+                                          text='DELAY LINE B',
                                           font=titles,
                                           fg=space_blue,
                                           bg=light_gray,
@@ -541,7 +616,7 @@ class delayProgramator_app(tk.Tk):
                                           height=20,
                                           width=20)
         self.pw_label_right.place(relx=0.5, 
-                                 rely=0.05, 
+                                 rely=0.1, 
                                  anchor='center')
         
         self.pw_button_right = tk.Button(self.pulse_frame_right,
@@ -549,28 +624,15 @@ class delayProgramator_app(tk.Tk):
                                         height=1,
                                         fg=space_blue,
                                         bg=white_ish,
-                                        font=normal,
+                                        font=outputfont,
                                         text=self.pw_str_right.get(),
                                         relief='flat',
                                         command=lambda: self.set_delayval(1))
         self.pw_button_right.place(relx=0.5,
-                                  rely=0.35,
+                                  rely=0.45,
                                   relwidth=0.9,
                                   anchor='center')
 
-        self.set_pw_button_right = tk.Button(self.pulse_frame_right,
-                                            height=1,
-                                            fg=space_blue,
-                                            bg=light_gray,
-                                            font=normal,
-                                            text="SET",
-                                            relief='flat',
-                                            command=lambda: self.set_delay(1))
-        self.set_pw_button_right.place(relx=0.25,
-                                      rely=0.6,
-                                      relwidth=0.4,
-                                      anchor='center')
-        
         self.reset_pw_button_right = tk.Button(self.pulse_frame_right,
                                               height=1,
                                               fg=space_blue,
@@ -579,8 +641,8 @@ class delayProgramator_app(tk.Tk):
                                               text="RESET",
                                               relief='flat',
                                               command=lambda: self.reset_delay(1))
-        self.reset_pw_button_right.place(relx=0.75,
-                                      rely=0.6,
+        self.reset_pw_button_right.place(relx=0.5,
+                                      rely=0.75,
                                       relwidth=0.4,
                                       anchor='center')
 
@@ -592,19 +654,29 @@ class delayProgramator_app(tk.Tk):
 ###### MAIN WINDOW INITIALIZATION
 
     def __init__(self):
+
         tk.Tk.__init__(self)  # self = root window
 
-        #GUI
+        # SPI
+        global hspi
+        self.hspi = rpi.spi_open(0, 100000)  # initialize SPI with 1 MHz freq in mode 0
+        self.CS = 9
+        self.SLOAD = 25
+        rpi.set_mode(self.SLOAD, OUTPUT)
+        rpi.set_mode(self.CS, OUTPUT)
+        rpi.write(self.SLOAD, 0)
+        rpi.write(self.CS, 1) 
+
+        # GUI
         self.title('Delay Line Programator')
         self.attributes("-fullscreen", True)  # app window starts in borderless fullscreen mode
         self.bind("<F11>", lambda event: self.attributes("-fullscreen", not self.attributes("-fullscreen")))
         self.bind("<Escape>", lambda event: self.attributes("-fullscreen", False))  # keyboard key bindings for exiting fullscreen mode
         self.update_idletasks() 
         self.configure(bg=space_blue)
-        self.config(cursor="none")
         self.chip = SY89297U()
 
-        # create widget
+        # create widgets
         self.create_widgets()
 
 ###### 

@@ -366,15 +366,15 @@ class delayProgramator_app(tk.Tk):
                     pass
             
             elif self.chip.get_name() == "MCP23S17":
-                if (self.unit == "ps" and self.pulse_width > 8695):
+                if (self.unit == "ps" and self.pulse_width > 10230):
                     messagebox.showwarning(title="Delay out of bounds.", 
-                                           message="The delay you try to set is too long. Maximum delay is 8,695 ns.")
+                                           message="The delay you try to set is too long. Maximum delay is 10,230 ns.")
                     self.pulse_width = 0
                     self.unit = ""
                     return
-                if (self.unit == "ns" and self.pulse_width > 8):
+                if (self.unit == "ns" and self.pulse_width > 10):
                     messagebox.showwarning(title="Delay out of bounds.", 
-                                           message="The delay you try to set is too long. Maximum delay is 8,695 ns.")
+                                           message="The delay you try to set is too long. Maximum delay is 10,230 ns.")
                     self.pulse_width = 0
                     self.unit = ""
                     return
