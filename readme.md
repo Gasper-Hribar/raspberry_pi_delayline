@@ -8,3 +8,4 @@ The SY100EP195B chip can delay two signals between 2,07 and 10,75 ns with approx
 
 ## Known issues:
 
+Many.
