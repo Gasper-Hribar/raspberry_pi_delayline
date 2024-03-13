@@ -1,6 +1,11 @@
 import subprocess
+from os.path import dirname, abspath
 
 def is_branch_behind():
+    file_directory = dirname(abspath(__file__))
+    print(f"print {file_directory}")
+    subprocess.check_output(['cd', file_directory])
+    print(subprocess.check_output(['pwd']))
     return True
 
     try:
