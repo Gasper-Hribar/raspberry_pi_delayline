@@ -1,14 +1,13 @@
 import subprocess
 from os.path import dirname, abspath
+import os
 
 def is_branch_behind():
-    file_directory = dirname(abspath(__file__))
-    print(f"print {file_directory}")
-    subprocess.check_output(['cd', file_directory])
-    print(subprocess.check_output(['pwd']))
-    return True
 
     try:
+        file_directory = dirname(abspath(__file__))
+        os.system(f'cd {file_directory}')
+        
         # Run the git status command
         output = subprocess.check_output(['git', 'status'])
         
