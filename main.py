@@ -681,7 +681,6 @@ class delayProgramator_app(tk.Tk):
         self.bind("<Escape>", lambda event: self.attributes("-fullscreen", False))  # keyboard key bindings for exiting fullscreen mode
         self.update_idletasks() 
         self.configure(bg=space_blue)
-        self.chip = SY89297U()
 
         # create widgets
         self.create_widgets()
