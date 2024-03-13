@@ -21,7 +21,7 @@ outputfont = "Lato 24 bold"
 outputminifont = "Lato 16 bold"
 normalminifont = "Lato 16"
 menufont = "Lato 16 bold"
-settingsfont = "Lato 14"
+settingsfont = "Lato 16"
 ampfont = "Lato 12"
 # END
 
