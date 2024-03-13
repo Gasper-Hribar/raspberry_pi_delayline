@@ -77,7 +77,7 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "SY89297U", "MCP23S17", "Option 3"]
+        options = ["Select", "SY89297U", "MC100EP195B", "Option 3"]
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
@@ -90,7 +90,7 @@ class delayProgramator_app(tk.Tk):
                 self.chip = SY89297U()
                 self.select_index = 1
 
-            elif chip == "MCP23S17":
+            elif chip == "MC100EP195B":
                 try:
                     del self.chip
                 except:

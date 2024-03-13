@@ -55,6 +55,8 @@ class SY89297U(DelayLine):
 class MCP23S17(DelayLine):
     """
     MCP23S17 chip object definition.
+
+    MCP23S17 is used to set two MC100EP195B delay line chips.
     """
 
     name = "MCP23S17"
