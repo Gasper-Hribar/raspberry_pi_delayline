@@ -182,6 +182,13 @@ class delayProgramator_app(tk.Tk):
         self.pulse_width = 0
         self.unit = ""
 
+        try:
+            _ = self.chip.get_name()
+        except:
+            messagebox.showwarning(title="Chip not selected.",
+                                   message="Please select a delay line chip before you set the value of a delay.")
+            return
+
         set_pulse = tk.Toplevel(
             bg=white_ish,
             relief='flat')
