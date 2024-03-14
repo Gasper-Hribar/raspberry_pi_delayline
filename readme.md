@@ -9,3 +9,8 @@ The SY100EP195B chip can delay two signals between 2,07 and 10,75 ns with approx
 ## Known issues:
 
 Many.
+
+## Updating the app
+
+App update is available via checking the github repository. If the local branch is behind in commits, the prompt will ask the user if it should update the app. If answered 'yes', the 
+updateService will pull the repository and restarted the app. 
