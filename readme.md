@@ -13,4 +13,4 @@ Many.
 ## Updating the app
 
 App update is available via checking the github repository. If the local branch is behind in commits, the prompt will ask the user if it should update the app. If answered 'yes', the 
-updateService will pull the repository and restarted the app. 
+updateService will pull the repository and restart the app. 
