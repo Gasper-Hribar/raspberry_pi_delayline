@@ -341,7 +341,7 @@ class delayProgramator_app(tk.Tk):
         btn_9.place(relwidth=0.2, relheight=0.25, relx=0.8, rely=0.48)
         btn_ps.place(relwidth=0.2, relheight=0.25, relx=0, rely=0.74)
         btn_ns.place(relwidth=0.2, relheight=0.25, relx=0.2, rely=0.74)
-        btn_OK.place(relwidth=0.8, relheight=0.25, relx=0.4, rely=0.74)
+        btn_OK.place(relwidth=0.6, relheight=0.25, relx=0.4, rely=0.74)
 
         def set_unit(unit):
             pw['text'] = f'{self.pulse_width} {unit}'
