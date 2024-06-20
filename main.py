@@ -535,6 +535,8 @@ class delayProgramator_app(tk.Tk):
         self.set_delay(0)
         self.set_delay(1)
 
+        self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color)
+
     def toggle_select0(self):
         self.select0 = not self.select0
         if self.select0:
@@ -547,6 +549,8 @@ class delayProgramator_app(tk.Tk):
         self.set_delay(0)
         self.set_delay(1)
 
+        self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color)
+
     def toggle_select1(self):
         self.select1 = not self.select1
         if self.select1:
@@ -557,7 +561,9 @@ class delayProgramator_app(tk.Tk):
             self.f_s1_color = space_blue
 
         self.set_delay(0)
-        self.set_delay(1)    
+        self.set_delay(1)
+
+        self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color)    
 
 
 ###### 
@@ -731,8 +737,8 @@ class delayProgramator_app(tk.Tk):
         
         self.button_enable = tk.Button(self.extra_buttons_frame,
                                        height=2,
-                                       fg=self.b_en_color,
-                                       bg=self.f_en_color,
+                                       fg=self.f_en_color,
+                                       bg=self.b_en_color,
                                        font=normal,
                                        text="ENABLE",
                                        relief='flat',
@@ -744,8 +750,8 @@ class delayProgramator_app(tk.Tk):
         
         self.button_select0 = tk.Button(self.extra_buttons_frame,
                                        height=2,
-                                       fg=self.b_s0_color,
-                                       bg=self.f_s0_color,
+                                       fg=self.f_s0_color,
+                                       bg=self.b_s0_color,
                                        font=normal,
                                        text="SELECT 0",
                                        relief='flat',
@@ -757,8 +763,8 @@ class delayProgramator_app(tk.Tk):
         
         self.button_select1 = tk.Button(self.extra_buttons_frame,
                                        height=2,
-                                       fg=self.b_s1_color,
-                                       bg=self.f_s1_color,
+                                       fg=self.f_s1_color,
+                                       bg=self.b_s1_color,
                                        font=normal,
                                        text="SELECT 1",
                                        relief='flat',
