@@ -585,6 +585,13 @@ class delayProgramator_app(tk.Tk):
         self.set_right = 0
         self.select_index = 0
 
+        self.b_en_color = red
+        self.f_en_color = space_blue
+        self.b_s0_color = red
+        self.f_s0_color = space_blue
+        self.b_s1_color = red
+        self.f_s1_color = space_blue
+
         (self.width, self.height) = (self.winfo_width(), self.winfo_height())  # get self.width and self.height of screen in pixels
 
         """
