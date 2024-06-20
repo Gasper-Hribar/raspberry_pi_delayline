@@ -87,12 +87,12 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "SY89297U", "MC100EP195B", "Option 3"]
+        options = ["Select", "808 nm", "660 nm"]
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
         def select_chip(chip):
-            if chip == "SY89297U":
+            if chip == "808 nm":
                 try:
                     del self.chip
                 except:
@@ -100,7 +100,7 @@ class delayProgramator_app(tk.Tk):
                 self.chip = SY89297U()
                 self.select_index = 1
 
-            elif chip == "MC100EP195B":
+            elif chip == "660 nm":
                 try:
                     del self.chip
                 except:
@@ -459,7 +459,7 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 0)
 
                 if num == 0:
-                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1)
+                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
@@ -468,7 +468,7 @@ class delayProgramator_app(tk.Tk):
                     self.set_left = 0
 
                 if num == 1:
-                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0)
+                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
@@ -516,7 +516,49 @@ class delayProgramator_app(tk.Tk):
         self.pulse_width = 0
         self.unit = ""
 
-        return   
+        return 
+
+######
+######
+######
+###### TOGGLE BUTTONS FUNCTIONS
+
+    def toggle_enable(self):
+        self.enable = not self.enable
+        if self.enable:
+            self.b_en_color = teal
+            self.f_en_color = white_ish
+        else:
+            self.b_en_color = red
+            self.f_en_color = space_blue
+
+        self.set_delay(0)
+        self.set_delay(1)
+
+    def toggle_select0(self):
+        self.select0 = not self.select0
+        if self.select0:
+            self.b_s0_color = teal
+            self.f_s0_color = white_ish
+        else:
+            self.b_s0_color = red
+            self.f_s0_color = space_blue
+        
+        self.set_delay(0)
+        self.set_delay(1)
+
+    def toggle_select1(self):
+        self.select1 = not self.select1
+        if self.select1:
+            self.b_s1_color = teal
+            self.f_s1_color = white_ish
+        else:
+            self.b_s1_color = red
+            self.f_s1_color = space_blue
+
+        self.set_delay(0)
+        self.set_delay(1)    
+
 
 ###### 
 ######
@@ -534,6 +576,9 @@ class delayProgramator_app(tk.Tk):
         self.tbits = 0x3ffff
         self.delay_left = 0
         self.delay_right = 0
+        self.enable = 0
+        self.select0 = 0
+        self.select1 = 0
         self.unit_left = ""
         self.unit_right = ""
         self.set_left = 0
@@ -560,16 +605,16 @@ class delayProgramator_app(tk.Tk):
         self.menu.add_cascade(label='Exit', menu=exitMenu)
 
         """
-        LEVA STRAN
+        LEVA STRAN DELAY
         """        
         self.pulse_frame_left = tk.Frame(self, 
                                          width=f'{self.width*ptomm}m',
                                          height=f'{self.height*ptomm}m',
                                          relief='flat',
                                          bg=light_gray)
-        self.pulse_frame_left.place(relx=0.05,
+        self.pulse_frame_left.place(relx=0.03,
                                     rely=0.05,
-                                    relwidth=0.43,
+                                    relwidth=0.40,
                                     relheight=0.90)
         
         self.pw_label_left = tk.Label(self.pulse_frame_left,
@@ -612,16 +657,16 @@ class delayProgramator_app(tk.Tk):
                                       anchor='center')
         
         """
-        DESNA STRAN UI
+        DESNA STRAN DELAY
         """        
         self.pulse_frame_right = tk.Frame(self, 
                                          width=f'{self.width*ptomm}m',
                                          height=f'{self.height*ptomm}m',
                                          relief='flat',
                                          bg=light_gray)
-        self.pulse_frame_right.place(relx=0.52,
+        self.pulse_frame_right.place(relx=0.44,
                                     rely=0.05,
-                                    relwidth=0.43,
+                                    relwidth=0.40,
                                     relheight=0.90)
         
         self.pw_label_right = tk.Label(self.pulse_frame_right,
@@ -662,6 +707,57 @@ class delayProgramator_app(tk.Tk):
                                       rely=0.75,
                                       relwidth=0.4,
                                       anchor='center')
+        
+        """
+        DODATNI GUMBI
+        """
+        self.extra_buttons_frame = tk.Frame(self,
+                                            relief='flat',
+                                            bg=light_gray
+                                            )
+        self.extra_buttons_frame.place(relx=0.85,
+                                       rely=0.05,
+                                       relwidth=0.12,
+                                       relheight=0.90)
+        
+        self.button_enable = tk.Button(self.extra_buttons_frame,
+                                       height=2,
+                                       fg=self.b_en_color,
+                                       bg=self.f_en_color,
+                                       font=normal,
+                                       text="ENABLE",
+                                       relief='flat',
+                                       command=lambda: self.toggle_enable())
+        self.extra_buttons_frame.place(relx=0.5,
+                                       rely=0.25,
+                                       relwidth=0.8,
+                                       anchor='center')
+        
+        self.button_select0 = tk.Button(self.extra_buttons_frame,
+                                       height=2,
+                                       fg=self.b_s0_color,
+                                       bg=self.f_s0_color,
+                                       font=normal,
+                                       text="SELECT 0",
+                                       relief='flat',
+                                       command=lambda: self.toggle_select0())
+        self.extra_buttons_frame.place(relx=0.5,
+                                       rely=0.5,
+                                       relwidth=0.8,
+                                       anchor='center')
+        
+        self.button_select1 = tk.Button(self.extra_buttons_frame,
+                                       height=2,
+                                       fg=self.b_s1_color,
+                                       bg=self.f_s1_color,
+                                       font=normal,
+                                       text="SELECT 1",
+                                       relief='flat',
+                                       command=lambda: self.toggle_select1())
+        self.extra_buttons_frame.place(relx=0.5,
+                                       rely=0.75,
+                                       relwidth=0.8,
+                                       anchor='center')
 
         return
 

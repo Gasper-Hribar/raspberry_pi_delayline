@@ -147,7 +147,7 @@ class MCP23S17(DelayLine):
         return value
     
 
-    def calc_delay(self, value, unit, side):
+    def calc_delay(self, value, unit, side, enable=0, sel0=0, sel1=0):
         """
         Returns a value to write to the MCP to forward it to the SZ100EP195B (V).
 
@@ -169,9 +169,9 @@ class MCP23S17(DelayLine):
 
         first_byte = 0b01000000 | self.address << 1
         second_byte = MCP23S17.GPIOA
-        third_byte = (retval >> 8) & 255
+        third_byte = (retval >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
         fourth_byte = retval & 255
-        fifth_byte = (retval_latch >> 8) & 255
+        fifth_byte = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
         sixth_byte = retval_latch & 255
         
         return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
