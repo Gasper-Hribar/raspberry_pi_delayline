@@ -719,6 +719,8 @@ class delayProgramator_app(tk.Tk):
         DODATNI GUMBI
         """
         self.extra_buttons_frame = tk.Frame(self,
+                                            width=f'{self.width*ptomm}m',
+                                            height=f'{self.height*ptomm}m',
                                             relief='flat',
                                             bg=light_gray
                                             )
@@ -735,10 +737,10 @@ class delayProgramator_app(tk.Tk):
                                        text="ENABLE",
                                        relief='flat',
                                        command=lambda: self.toggle_enable())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.25,
-                                       relwidth=0.8,
-                                       anchor='center')
+        self.button_enable.place(relx=0.5,
+                                 rely=0.25,
+                                 relwidth=0.8,
+                                 anchor='center')
         
         self.button_select0 = tk.Button(self.extra_buttons_frame,
                                        height=2,
@@ -748,10 +750,10 @@ class delayProgramator_app(tk.Tk):
                                        text="SELECT 0",
                                        relief='flat',
                                        command=lambda: self.toggle_select0())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.5,
-                                       relwidth=0.8,
-                                       anchor='center')
+        self.button_select0.place(relx=0.5,
+                                  rely=0.5,
+                                  relwidth=0.8,
+                                  anchor='center')
         
         self.button_select1 = tk.Button(self.extra_buttons_frame,
                                        height=2,
@@ -761,10 +763,10 @@ class delayProgramator_app(tk.Tk):
                                        text="SELECT 1",
                                        relief='flat',
                                        command=lambda: self.toggle_select1())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.75,
-                                       relwidth=0.8,
-                                       anchor='center')
+        self.button_select1.place(relx=0.5,
+                                  rely=0.75,
+                                  relwidth=0.8,
+                                  anchor='center')
 
         return
 
