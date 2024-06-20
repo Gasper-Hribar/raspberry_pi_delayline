@@ -718,53 +718,53 @@ class delayProgramator_app(tk.Tk):
         """
         DODATNI GUMBI
         """
-        self.extra_buttons_frame = tk.Frame(self,
-                                            relief='flat',
-                                            bg=light_gray
-                                            )
-        self.extra_buttons_frame.place(relx=0.85,
-                                       rely=0.05,
-                                       relwidth=0.12,
-                                       relheight=0.90)
+        # self.extra_buttons_frame = tk.Frame(self,
+        #                                     relief='flat',
+        #                                     bg=light_gray
+        #                                     )
+        # self.extra_buttons_frame.place(relx=0.85,
+        #                                rely=0.05,
+        #                                relwidth=0.12,
+        #                                relheight=0.90)
         
-        self.button_enable = tk.Button(self.extra_buttons_frame,
-                                       height=2,
-                                       fg=self.b_en_color,
-                                       bg=self.f_en_color,
-                                       font=normal,
-                                       text="ENABLE",
-                                       relief='flat',
-                                       command=lambda: self.toggle_enable())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.25,
-                                       relwidth=0.8,
-                                       anchor='center')
+        # self.button_enable = tk.Button(self.extra_buttons_frame,
+        #                                height=2,
+        #                                fg=self.b_en_color,
+        #                                bg=self.f_en_color,
+        #                                font=normal,
+        #                                text="ENABLE",
+        #                                relief='flat',
+        #                                command=lambda: self.toggle_enable())
+        # self.extra_buttons_frame.place(relx=0.5,
+        #                                rely=0.25,
+        #                                relwidth=0.8,
+        #                                anchor='center')
         
-        self.button_select0 = tk.Button(self.extra_buttons_frame,
-                                       height=2,
-                                       fg=self.b_s0_color,
-                                       bg=self.f_s0_color,
-                                       font=normal,
-                                       text="SELECT 0",
-                                       relief='flat',
-                                       command=lambda: self.toggle_select0())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.5,
-                                       relwidth=0.8,
-                                       anchor='center')
+        # self.button_select0 = tk.Button(self.extra_buttons_frame,
+        #                                height=2,
+        #                                fg=self.b_s0_color,
+        #                                bg=self.f_s0_color,
+        #                                font=normal,
+        #                                text="SELECT 0",
+        #                                relief='flat',
+        #                                command=lambda: self.toggle_select0())
+        # self.extra_buttons_frame.place(relx=0.5,
+        #                                rely=0.5,
+        #                                relwidth=0.8,
+        #                                anchor='center')
         
-        self.button_select1 = tk.Button(self.extra_buttons_frame,
-                                       height=2,
-                                       fg=self.b_s1_color,
-                                       bg=self.f_s1_color,
-                                       font=normal,
-                                       text="SELECT 1",
-                                       relief='flat',
-                                       command=lambda: self.toggle_select1())
-        self.extra_buttons_frame.place(relx=0.5,
-                                       rely=0.75,
-                                       relwidth=0.8,
-                                       anchor='center')
+        # self.button_select1 = tk.Button(self.extra_buttons_frame,
+        #                                height=2,
+        #                                fg=self.b_s1_color,
+        #                                bg=self.f_s1_color,
+        #                                font=normal,
+        #                                text="SELECT 1",
+        #                                relief='flat',
+        #                                command=lambda: self.toggle_select1())
+        # self.extra_buttons_frame.place(relx=0.5,
+        #                                rely=0.75,
+        #                                relwidth=0.8,
+        #                                anchor='center')
 
         return
 
