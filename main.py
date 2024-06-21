@@ -142,8 +142,11 @@ class delayProgramator_app(tk.Tk):
                                     message="Selected chip has not been initialized.")
 
             if chip == "660 nm":
-                self.b_en_color = teal
-                self.f_en_color = white_ish
+                self.enable = 1
+                self.select0 = 1
+                self.select1 = 1
+                self.b_en_color = red
+                self.f_en_color = space_blue
                 self.b_s0_color = teal
                 self.f_s0_color = white_ish
                 self.b_s1_color = teal
@@ -551,7 +554,7 @@ class delayProgramator_app(tk.Tk):
     def toggle_enable(self):
         if self.chip.get_name() == "MCP23S17":
             self.enable = not self.enable
-            if self.enable:
+            if not self.enable:
                 self.b_en_color = teal
                 self.f_en_color = white_ish
             else:

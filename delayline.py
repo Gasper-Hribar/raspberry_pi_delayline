@@ -157,7 +157,7 @@ class MCP23S17(DelayLine):
         return value
     
 
-    def calc_delay(self, value, unit, side, enable=0, sel0=0, sel1=0):
+    def calc_delay(self, value, unit, side, enable=1, sel0=1, sel1=1):
         """
         Returns a value to write to the MCP to forward it to the SZ100EP195B (V).
 
