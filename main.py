@@ -132,6 +132,7 @@ class delayProgramator_app(tk.Tk):
             elif chip == "Select":
                 try:
                     del self.chip
+                    self.chip = NOCHIP()
                 except:
                     pass
                 self.select_index = 0
@@ -139,6 +140,30 @@ class delayProgramator_app(tk.Tk):
             else:
                 messagebox.showinfo(title="Chip not initialized.", 
                                     message="Selected chip has not been initialized.")
+
+            if chip == "660 nm":
+                self.b_en_color = teal
+                self.f_en_color = white_ish
+                self.b_s0_color = teal
+                self.f_s0_color = white_ish
+                self.b_s1_color = teal
+                self.f_s1_color = white_ish
+                self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
+                self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
+                self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
+
+            else:
+                self.b_en_color = dark_gray
+                self.f_en_color = white_ish
+                self.b_s0_color = dark_gray
+                self.f_s0_color = white_ish
+                self.b_s1_color = dark_gray
+                self.f_s1_color = white_ish
+                self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
+                self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
+                self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
+
+
             return
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
@@ -524,49 +549,58 @@ class delayProgramator_app(tk.Tk):
 ###### TOGGLE BUTTONS FUNCTIONS
 
     def toggle_enable(self):
-        self.enable = not self.enable
-        if self.enable:
-            self.b_en_color = teal
-            self.f_en_color = white_ish
+        if self.chip.get_name == "MCP23S17":
+            self.enable = not self.enable
+            if self.enable:
+                self.b_en_color = teal
+                self.f_en_color = white_ish
+            else:
+                self.b_en_color = red
+                self.f_en_color = space_blue
+
+            self.set_delay(0)
+            self.set_delay(1)
+
+            self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
+            self.pw_label_left.focus_set()
         else:
-            self.b_en_color = red
-            self.f_en_color = space_blue
-
-        self.set_delay(0)
-        self.set_delay(1)
-
-        self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color,)
-        self.pw_label_left.focus_set()
+            return
+        
 
     def toggle_select0(self):
-        self.select0 = not self.select0
-        if self.select0:
-            self.b_s0_color = teal
-            self.f_s0_color = white_ish
-        else:
-            self.b_s0_color = red
-            self.f_s0_color = space_blue
-        
-        self.set_delay(0)
-        self.set_delay(1)
+        if self.chip.get_name == "MCP23S17":
+            self.select0 = not self.select0
+            if self.select0:
+                self.b_s0_color = teal
+                self.f_s0_color = white_ish
+            else:
+                self.b_s0_color = red
+                self.f_s0_color = space_blue
+            
+            self.set_delay(0)
+            self.set_delay(1)
 
-        self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color,)
-        self.pw_label_left.focus_set()
+            self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
+        else:
+            return
+
 
     def toggle_select1(self):
-        self.select1 = not self.select1
-        if self.select1:
-            self.b_s1_color = teal
-            self.f_s1_color = white_ish
+        if self.chip.get_name == "MCP23S17":
+            self.select1 = not self.select1
+            if self.select1:
+                self.b_s1_color = teal
+                self.f_s1_color = white_ish
+            else:
+                self.b_s1_color = red
+                self.f_s1_color = space_blue
+
+            self.set_delay(0)
+            self.set_delay(1)
+
+            self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
         else:
-            self.b_s1_color = red
-            self.f_s1_color = space_blue
-
-        self.set_delay(0)
-        self.set_delay(1)
-
-        self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color,)
-        self.pw_label_left.focus_set()    
+            return
 
 
 ###### 
@@ -594,12 +628,14 @@ class delayProgramator_app(tk.Tk):
         self.set_right = 0
         self.select_index = 0
 
-        self.b_en_color = teal
+        self.b_en_color = dark_gray
         self.f_en_color = white_ish
-        self.b_s0_color = teal
+        self.b_s0_color = dark_gray
         self.f_s0_color = white_ish
-        self.b_s1_color = teal
+        self.b_s1_color = dark_gray
         self.f_s1_color = white_ish
+
+        self.chip = NOCHIP()
 
         (self.width, self.height) = (self.winfo_width(), self.winfo_height())  # get self.width and self.height of screen in pixels
 

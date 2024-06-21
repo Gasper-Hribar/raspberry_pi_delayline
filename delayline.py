@@ -7,7 +7,17 @@ class DelayLine():
 
     def __init__(self):
         return
-    
+
+
+class NOCHIP(DelayLine):
+    """
+    No chip is selected. Initialized at the start of the program.
+    """
+
+    name = "nochip"
+
+    def get_name(self):
+        return self.name
 
 class SY89297U(DelayLine):
     """
