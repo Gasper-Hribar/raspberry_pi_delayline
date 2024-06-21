@@ -549,8 +549,7 @@ class delayProgramator_app(tk.Tk):
 ###### TOGGLE BUTTONS FUNCTIONS
 
     def toggle_enable(self):
-        print(self.chip.get_name)
-        if self.chip.get_name == "MCP23S17":
+        if self.chip.get_name() == "MCP23S17":
             self.enable = not self.enable
             if self.enable:
                 self.b_en_color = teal
@@ -569,7 +568,7 @@ class delayProgramator_app(tk.Tk):
         
 
     def toggle_select0(self):
-        if self.chip.get_name == "MCP23S17":
+        if self.chip.get_name() == "MCP23S17":
             self.select0 = not self.select0
             if self.select0:
                 self.b_s0_color = teal
@@ -587,7 +586,7 @@ class delayProgramator_app(tk.Tk):
 
 
     def toggle_select1(self):
-        if self.chip.get_name == "MCP23S17":
+        if self.chip.get_name() == "MCP23S17":
             self.select1 = not self.select1
             if self.select1:
                 self.b_s1_color = teal
