@@ -142,7 +142,7 @@ class delayProgramator_app(tk.Tk):
             return
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
-            text="Select chip: ", 
+            text="Select device: ", 
             width=120,
             bg=light_gray,
             fg=black,
@@ -582,21 +582,21 @@ class delayProgramator_app(tk.Tk):
         self.tbits = 0x3ffff
         self.delay_left = 0
         self.delay_right = 0
-        self.enable = 0
-        self.select0 = 0
-        self.select1 = 0
+        self.enable = 1
+        self.select0 = 1
+        self.select1 = 1
         self.unit_left = ""
         self.unit_right = ""
         self.set_left = 0
         self.set_right = 0
         self.select_index = 0
 
-        self.b_en_color = red
-        self.f_en_color = space_blue
-        self.b_s0_color = red
-        self.f_s0_color = space_blue
-        self.b_s1_color = red
-        self.f_s1_color = space_blue
+        self.b_en_color = teal
+        self.f_en_color = white_ish
+        self.b_s0_color = teal
+        self.f_s0_color = white_ish
+        self.b_s1_color = teal
+        self.f_s1_color = white_ish
 
         (self.width, self.height) = (self.winfo_width(), self.winfo_height())  # get self.width and self.height of screen in pixels
 
@@ -742,6 +742,7 @@ class delayProgramator_app(tk.Tk):
                                        font=normal,
                                        text="ENABLE",
                                        relief='flat',
+                                       takefocus=0,
                                        command=lambda: self.toggle_enable())
         self.button_enable.place(relx=0.5,
                                  rely=0.25,
@@ -755,6 +756,7 @@ class delayProgramator_app(tk.Tk):
                                        font=normal,
                                        text="SELECT 0",
                                        relief='flat',
+                                       takefocus=0,
                                        command=lambda: self.toggle_select0())
         self.button_select0.place(relx=0.5,
                                   rely=0.5,
@@ -768,6 +770,7 @@ class delayProgramator_app(tk.Tk):
                                        font=normal,
                                        text="SELECT 1",
                                        relief='flat',
+                                       takefocus=0,
                                        command=lambda: self.toggle_select1())
         self.button_select1.place(relx=0.5,
                                   rely=0.75,
