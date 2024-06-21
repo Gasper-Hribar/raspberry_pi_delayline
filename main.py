@@ -536,6 +536,7 @@ class delayProgramator_app(tk.Tk):
         self.set_delay(1)
 
         self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color)
+        self.pw_label_left.focus_set()
 
     def toggle_select0(self):
         self.select0 = not self.select0
@@ -550,6 +551,7 @@ class delayProgramator_app(tk.Tk):
         self.set_delay(1)
 
         self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color)
+        self.pw_label_left.focus_set()
 
     def toggle_select1(self):
         self.select1 = not self.select1
@@ -563,7 +565,8 @@ class delayProgramator_app(tk.Tk):
         self.set_delay(0)
         self.set_delay(1)
 
-        self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color)    
+        self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color)
+        self.pw_label_left.focus_set()    
 
 
 ###### 
