@@ -457,7 +457,7 @@ class delayProgramator_app(tk.Tk):
 ######
 ###### SET DELAY FUNCTION
             
-    def set_delay(self, num):
+    def set_delay(self, num, toggle_only):
 
         try:
             if self.chip.get_name() == "SY89297U":
@@ -487,7 +487,7 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 0)
 
                 if num == 0:
-                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1)
+                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1, toggle_only)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
@@ -496,7 +496,7 @@ class delayProgramator_app(tk.Tk):
                     self.set_left = 0
 
                 if num == 1:
-                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1)
+                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1, toggle_only)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
@@ -528,7 +528,7 @@ class delayProgramator_app(tk.Tk):
         if num == 0:
             self.delay_left = 0            
             self.unit_left = ""
-            self.set_delay(num)
+            self.set_delay(num, 0)
             self.set_left = 0
             self.pw_str_left.set("Delay")
             self.pw_button_left['text'] = self.pw_str_left.get()
@@ -536,7 +536,7 @@ class delayProgramator_app(tk.Tk):
         if num == 1:
             self.delay_right = 0
             self.unit_right = 0
-            self.set_delay(num)
+            self.set_delay(num, 0)
             self.set_right = 0
             self.pw_str_right.set("Delay")
             self.pw_button_right['text'] = self.pw_str_right.get()
@@ -561,8 +561,8 @@ class delayProgramator_app(tk.Tk):
                 self.b_en_color = red
                 self.f_en_color = space_blue
 
-            self.set_delay(0)
-            self.set_delay(1)
+            self.set_delay(0, toggle_only=1)
+            # self.set_delay(1)
 
             self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
             self.pw_label_left.focus_set()
@@ -580,8 +580,8 @@ class delayProgramator_app(tk.Tk):
                 self.b_s0_color = red
                 self.f_s0_color = space_blue
             
-            self.set_delay(0)
-            self.set_delay(1)
+            self.set_delay(0, toggle_only=1)
+            # self.set_delay(1)
 
             self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
         else:
@@ -598,8 +598,8 @@ class delayProgramator_app(tk.Tk):
                 self.b_s1_color = red
                 self.f_s1_color = space_blue
 
-            self.set_delay(0)
-            self.set_delay(1)
+            self.set_delay(0, toggle_only=1)
+            # self.set_delay(1)
 
             self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
         else:
