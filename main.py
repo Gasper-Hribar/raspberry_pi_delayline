@@ -520,7 +520,7 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_states(self):
         rpi.write(self.CS, 0)
-        rpi.spi_write(self.chip.set_bits(self.enable, self.select0, self.select1))
+        rpi.spi_write(self.hspi, self.chip.set_bits(self.enable, self.select0, self.select1))
         rpi.write(self.CS, 1)
         return
 
