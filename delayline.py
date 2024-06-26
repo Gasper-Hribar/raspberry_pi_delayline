@@ -156,8 +156,19 @@ class MCP23S17(DelayLine):
                  ]  # value: first byte = address, second byte = 0, third and fourth bytes = bits for setting I/O (output = 0)
         return value
     
+    
+    def set_bits(self, en, s0, s1):
+        retval = 1 << MCP23S17.LEN0_BIT | 1 << MCP23S17.LEN1_BIT
 
-    def calc_delay(self, value, unit, side, enable=1, sel0=1, sel1=1, toggle_only=0):
+        first_byte = 0b01000000 | self.address << 1
+        second_byte = MCP23S17.GPIOA
+        third_byte = 0
+        fourth_byte = en << 3 | s0 << 6 | s1 << 7
+
+        return [first_byte, second_byte, third_byte, fourth_byte]
+    
+
+    def calc_delay(self, value, unit, side, enable=1, sel0=1, sel1=1):
         """
         Returns a value to write to the MCP to forward it to the SZ100EP195B (V).
 
@@ -175,8 +186,6 @@ class MCP23S17(DelayLine):
         else:
             retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN0_BIT)
             # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.")
-        
-
 
         first_byte = 0b01000000 | self.address << 1
         second_byte = MCP23S17.GPIOA
@@ -185,11 +194,8 @@ class MCP23S17(DelayLine):
         fifth_byte = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
         sixth_byte = retval_latch & 255
         
-        if not toggle_only:
-            return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
-        else:
-            return [first_byte, second_byte, sixth_byte, fifth_byte]
-
+        return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
+       
 
     def __init__(self, address):
         # super().__init__()

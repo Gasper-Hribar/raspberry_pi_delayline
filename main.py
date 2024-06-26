@@ -457,7 +457,7 @@ class delayProgramator_app(tk.Tk):
 ######
 ###### SET DELAY FUNCTION
             
-    def set_delay(self, num, toggle_only):
+    def set_delay(self, num):
 
         try:
             if self.chip.get_name() == "SY89297U":
@@ -487,30 +487,22 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 0)
 
                 if num == 0:
-                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1, toggle_only)
+                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
-                    if not toggle_only:
-                        rpi.spi_write(self.hspi, writeval[0:4])
-                        rpi.write(self.CS, 1)
-                        rpi.write(self.CS, 0)
-                        rpi.spi_write(self.hspi, writeval[4:])
-                        self.set_left = 0
-                    else:
-                        rpi.spi_write(self.hspi, writeval)
-                        rpi.write(self.CS, 1)
+                    rpi.spi_write(self.hspi, writeval[0:4])
+                    rpi.write(self.CS, 1)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[4:])
+                    self.set_left = 0
 
                 if num == 1:
-                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1, toggle_only)
+                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
-                    if not toggle_only:
-                        rpi.spi_write(self.hspi, writeval[0:4])
-                        rpi.write(self.CS, 1)
-                        rpi.write(self.CS, 0)
-                        rpi.spi_write(self.hspi, writeval[4:])
-                        self.set_right = 0
-                    else:
-                        rpi.spi_write(self.hspi, writeval)
-                        rpi.write(self.CS, 1)
+                    rpi.spi_write(self.hspi, writeval[0:4])
+                    rpi.write(self.CS, 1)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[4:])
+                    self.set_right = 0
                 
                 rpi.write(self.CS, 1)
                 
@@ -523,7 +515,26 @@ class delayProgramator_app(tk.Tk):
         except Exception as e:
             print(e)
 
-        return            
+        return    
+
+
+    def toggle_states(self):
+        rpi.write(self.CS, 0)
+        rpi.spi_write(self.chip.set_bits(self.enable, self.select0, self.select1))
+        rpi.write(self.CS, 1)
+        return
+
+    # def set_select_0(self):
+    #     rpi.write(self.CS, 0)
+    #     rpi.spi_write(self.chip.set_bit(self.select0, 6))
+    #     rpi.write(self.CS, 1)
+    #     return
+    
+    # def set_select_1(self):
+    #     rpi.write(self.CS, 0)
+    #     rpi.spi_write(self.chip.set_bit(self.select1, 7))
+
+    #     return
 
 
 ######
@@ -569,7 +580,7 @@ class delayProgramator_app(tk.Tk):
                 self.b_en_color = red
                 self.f_en_color = space_blue
 
-            self.set_delay(0, toggle_only=1)
+            self.toggle_states()
             # self.set_delay(1)
 
             self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
@@ -588,7 +599,7 @@ class delayProgramator_app(tk.Tk):
                 self.b_s0_color = teal
                 self.f_s0_color = white_ish
             
-            self.set_delay(0, toggle_only=1)
+            self.toggle_states()
             # self.set_delay(1)
 
             self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
@@ -606,7 +617,7 @@ class delayProgramator_app(tk.Tk):
                 self.b_s1_color = teal
                 self.f_s1_color = white_ish
 
-            self.set_delay(0, toggle_only=1)
+            self.toggle_states()
             # self.set_delay(1)
 
             self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
