@@ -547,7 +547,7 @@ class delayProgramator_app(tk.Tk):
         if num == 0:
             self.delay_left = 0            
             self.unit_left = ""
-            self.set_delay(num, 0)
+            self.set_delay(num)
             self.set_left = 0
             self.pw_str_left.set("Delay")
             self.pw_button_left['text'] = self.pw_str_left.get()
@@ -555,7 +555,7 @@ class delayProgramator_app(tk.Tk):
         if num == 1:
             self.delay_right = 0
             self.unit_right = 0
-            self.set_delay(num, 0)
+            self.set_delay(num)
             self.set_right = 0
             self.pw_str_right.set("Delay")
             self.pw_button_right['text'] = self.pw_str_right.get()
