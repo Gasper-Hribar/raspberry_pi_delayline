@@ -169,7 +169,7 @@ class MCP23S17(DelayLine):
         retval = retval | 1 << MCP23S17.LEN0_BIT | 1 << MCP23S17.LEN1_BIT 
         # print(f"Retval: {retval}, {bin(retval)}.")
 
-        if toggle_only:
+        if not toggle_only:
             if side:
                 retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
                 # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.") 
