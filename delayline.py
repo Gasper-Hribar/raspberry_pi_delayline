@@ -169,15 +169,13 @@ class MCP23S17(DelayLine):
         retval = retval | 1 << MCP23S17.LEN0_BIT | 1 << MCP23S17.LEN1_BIT 
         # print(f"Retval: {retval}, {bin(retval)}.")
 
-        if not toggle_only:
-            if side:
-                retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
-                # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.") 
-            else:
-                retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN0_BIT)
-                # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.")
+        if side:
+            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
+            # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.") 
         else:
-            retval_latch = retval 
+            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN0_BIT)
+            # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.")
+        
 
 
         first_byte = 0b01000000 | self.address << 1
@@ -187,7 +185,10 @@ class MCP23S17(DelayLine):
         fifth_byte = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
         sixth_byte = retval_latch & 255
         
-        return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
+        if not toggle_only:
+            return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
+        else:
+            return [first_byte, second_byte, sixth_byte, fifth_byte]
 
 
     def __init__(self, address):

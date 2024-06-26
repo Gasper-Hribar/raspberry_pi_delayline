@@ -147,9 +147,9 @@ class delayProgramator_app(tk.Tk):
                 self.select1 = 1
                 self.b_en_color = red
                 self.f_en_color = space_blue
-                self.b_s0_color = teal
+                self.b_s0_color = red
                 self.f_s0_color = white_ish
-                self.b_s1_color = teal
+                self.b_s1_color = red
                 self.f_s1_color = white_ish
                 self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
                 self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
@@ -489,20 +489,28 @@ class delayProgramator_app(tk.Tk):
                 if num == 0:
                     writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1, toggle_only)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
-                    rpi.spi_write(self.hspi, writeval[0:4])
-                    rpi.write(self.CS, 1)
-                    rpi.write(self.CS, 0)
-                    rpi.spi_write(self.hspi, writeval[4:])
-                    self.set_left = 0
+                    if not toggle_only:
+                        rpi.spi_write(self.hspi, writeval[0:4])
+                        rpi.write(self.CS, 1)
+                        rpi.write(self.CS, 0)
+                        rpi.spi_write(self.hspi, writeval[4:])
+                        self.set_left = 0
+                    else:
+                        rpi.spi_write(self.hspi, writeval)
+                        rpi.write(self.CS, 1)
 
                 if num == 1:
                     writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1, toggle_only)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
-                    rpi.spi_write(self.hspi, writeval[0:4])
-                    rpi.write(self.CS, 1)
-                    rpi.write(self.CS, 0)
-                    rpi.spi_write(self.hspi, writeval[4:])
-                    self.set_right = 0
+                    if not toggle_only:
+                        rpi.spi_write(self.hspi, writeval[0:4])
+                        rpi.write(self.CS, 1)
+                        rpi.write(self.CS, 0)
+                        rpi.spi_write(self.hspi, writeval[4:])
+                        self.set_right = 0
+                    else:
+                        rpi.spi_write(self.hspi, writeval)
+                        rpi.write(self.CS, 1)
                 
                 rpi.write(self.CS, 1)
                 
@@ -574,11 +582,11 @@ class delayProgramator_app(tk.Tk):
         if self.chip.get_name() == "MCP23S17":
             self.select0 = not self.select0
             if self.select0:
-                self.b_s0_color = teal
-                self.f_s0_color = white_ish
-            else:
                 self.b_s0_color = red
                 self.f_s0_color = space_blue
+            else:
+                self.b_s0_color = teal
+                self.f_s0_color = white_ish
             
             self.set_delay(0, toggle_only=1)
             # self.set_delay(1)
@@ -592,11 +600,11 @@ class delayProgramator_app(tk.Tk):
         if self.chip.get_name() == "MCP23S17":
             self.select1 = not self.select1
             if self.select1:
-                self.b_s1_color = teal
-                self.f_s1_color = white_ish
-            else:
                 self.b_s1_color = red
                 self.f_s1_color = space_blue
+            else:
+                self.b_s1_color = teal
+                self.f_s1_color = white_ish
 
             self.set_delay(0, toggle_only=1)
             # self.set_delay(1)
