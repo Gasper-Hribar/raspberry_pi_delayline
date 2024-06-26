@@ -126,6 +126,9 @@ class delayProgramator_app(tk.Tk):
                 rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[4:])
                 rpi.write(self.CS, 1)
 
+                self.reset_delay(0)
+                self.reset_delay(1)
+
                 self.select_index = 2
                 
 
