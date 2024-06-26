@@ -149,7 +149,7 @@ class delayProgramator_app(tk.Tk):
                 self.select0 = 1
                 self.select1 = 1
                 self.b_en_color = red
-                self.f_en_color = space_blue
+                self.f_en_color = white_ish
                 self.b_s0_color = red
                 self.f_s0_color = white_ish
                 self.b_s1_color = red
@@ -490,7 +490,7 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 0)
 
                 if num == 0:
-                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 1, self.enable, self.select0, self.select1)
+                    writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 0, self.enable, self.select0, self.select1)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
@@ -499,7 +499,7 @@ class delayProgramator_app(tk.Tk):
                     self.set_left = 0
 
                 if num == 1:
-                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 0, self.enable, self.select0, self.select1)
+                    writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 1, self.enable, self.select0, self.select1)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)

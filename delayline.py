@@ -168,7 +168,7 @@ class MCP23S17(DelayLine):
         return [first_byte, second_byte, third_byte, fourth_byte]
     
 
-    def calc_delay(self, value, unit, side, enable=1, sel0=1, sel1=1):
+    def calc_delay(self, value, unit, side, enable, sel0, sel1):
         """
         Returns a value to write to the MCP to forward it to the SZ100EP195B (V).
 
@@ -180,7 +180,7 @@ class MCP23S17(DelayLine):
         retval = retval | 1 << MCP23S17.LEN0_BIT | 1 << MCP23S17.LEN1_BIT 
         # print(f"Retval: {retval}, {bin(retval)}.")
 
-        if side:
+        if side == 0:
             retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
             # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.") 
         else:
