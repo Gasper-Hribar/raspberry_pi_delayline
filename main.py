@@ -606,10 +606,10 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_select1(self):
         if self.chip.get_name() == "MCP23S17":
-            if self.select0 == 0:
-                self.select0 = 1
+            if self.select1 == 0:
+                self.select1 = 1
             else:
-                self.select0 = 0
+                self.select1 = 0
 
             if self.select1:
                 self.b_s1_color = red
