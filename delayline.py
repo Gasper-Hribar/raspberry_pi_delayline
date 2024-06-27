@@ -194,7 +194,7 @@ class MCP23S17(DelayLine):
         data_byte_1 = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
         data_byte_0 = retval_latch & 255
         
-        return [address_byte, register_byte, data_byte_0, data_byte_1, address_byte, register_byte, data_byte_2, data_byte_3]
+        return [address_byte, register_byte, data_byte_2, data_byte_3, address_byte, register_byte, data_byte_0, data_byte_1, address_byte, register_byte, data_byte_2, data_byte_3]
        
 
     def __init__(self, address):

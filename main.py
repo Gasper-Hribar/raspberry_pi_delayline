@@ -138,8 +138,7 @@ class delayProgramator_app(tk.Tk):
                 messagebox.showinfo(title="Chip not initialized.", 
                                     message="Selected chip has not been initialized.")
 
-            if chip == "660 nm":
-                
+            if chip == "660 nm":                
                 self.b_en_color = red
                 self.f_en_color = white_ish
                 self.b_s0_color = red
@@ -478,23 +477,33 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 0)
 
                 if num == 0:
+                    print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
                     writeval = self.chip.calc_delay(self.delay_left, self.unit_left == "ns", 0, self.enable, self.select0, self.select1)
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
                     time.sleep(0.001)
                     rpi.write(self.CS, 0)
-                    rpi.spi_write(self.hspi, writeval[4:])
+                    rpi.spi_write(self.hspi, writeval[4:8])
+                    rpi.write(self.CS, 1)
+                    time.sleep(0.001)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[8:])
                     self.set_left = 0
 
                 if num == 1:
+                    print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
                     writeval = self.chip.calc_delay(self.delay_right, self.unit_right == "ns", 1, self.enable, self.select0, self.select1)
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
                     time.sleep(0.001)
                     rpi.write(self.CS, 0)
-                    rpi.spi_write(self.hspi, writeval[4:])
+                    rpi.spi_write(self.hspi, writeval[4:8])
+                    rpi.write(self.CS, 1)
+                    time.sleep(0.001)
+                    rpi.write(self.CS, 0)
+                    rpi.spi_write(self.hspi, writeval[8:])
                     self.set_right = 0
                 
                 rpi.write(self.CS, 1)
@@ -515,16 +524,18 @@ class delayProgramator_app(tk.Tk):
         rpi.write(self.CS, 0)
         data = self.chip.set_bits(self.enable, self.select0, self.select1)
         rpi.spi_write(self.hspi, data)
-        print(data)
+        print(f"data on toggle: {data}")
         rpi.write(self.CS, 1)
 
-        if self.on_init == 1:
-            time.sleep(0.001)
-            self.reset_delay(0)
-            time.sleep(0.001)
-            self.reset_delay(1)
-            self.on_init = 0
-            print("on_init, check")
+        # if self.on_init == 1:
+        #     time.sleep(0.001)
+        #     print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
+        #     self.reset_delay(0)
+        #     time.sleep(0.001)
+        #     print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
+        #     self.reset_delay(1)
+        #     self.on_init = 0
+        #     print("on_init, check")
         return
 
 
