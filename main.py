@@ -520,6 +520,7 @@ class delayProgramator_app(tk.Tk):
             self.reset_delay(0)
             self.reset_delay(1)
             self.on_init = 0
+            print("on_init, check")
         return
 
 
