@@ -163,7 +163,7 @@ class MCP23S17(DelayLine):
         first_byte = 0b01000000 | self.address << 1
         second_byte = MCP23S17.GPIOA
         third_byte = 0
-        fourth_byte = en << 3 | s0 << 6 | s1 << 7
+        fourth_byte = (retval >> 8) & 255 | en << 3 | s0 << 6 | s1 << 7
 
         return [first_byte, second_byte, third_byte, fourth_byte]
     

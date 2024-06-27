@@ -114,7 +114,6 @@ class delayProgramator_app(tk.Tk):
                 self.enable = 1
                 self.select0 = 1
                 self.select1 = 1
-                self.on_init = 1
 
                 """ Opening the line. Setting the delay to 0. """
                
@@ -524,18 +523,8 @@ class delayProgramator_app(tk.Tk):
         rpi.write(self.CS, 0)
         data = self.chip.set_bits(self.enable, self.select0, self.select1)
         rpi.spi_write(self.hspi, data)
-        print(f"data on toggle: {data}")
+        print(f"data on toggle: {[bin(x) for x in data]}")
         rpi.write(self.CS, 1)
-
-        # if self.on_init == 1:
-        #     time.sleep(0.001)
-        #     print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
-        #     self.reset_delay(0)
-        #     time.sleep(0.001)
-        #     print(f"en: {self.enable}, sel0: {self.select0}, sel1: {self.select1}")
-        #     self.reset_delay(1)
-        #     self.on_init = 0
-        #     print("on_init, check")
         return
 
 
@@ -574,8 +563,12 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_enable(self):
         if self.chip.get_name() == "MCP23S17":
-            self.enable = not self.enable
-            if not self.enable:
+            if self.enable == 0:
+                self.enable = 1
+            else:
+                self.enable = 0
+            
+            if self.enable == 0:
                 self.b_en_color = teal
                 self.f_en_color = white_ish
             else:
@@ -592,7 +585,11 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_select0(self):
         if self.chip.get_name() == "MCP23S17":
-            self.select0 = not self.select0
+            if self.select0 == 0:
+                self.select0 = 1
+            else:
+                self.select0 = 0
+
             if self.select0:
                 self.b_s0_color = red
                 self.f_s0_color = white_ish
@@ -609,7 +606,11 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_select1(self):
         if self.chip.get_name() == "MCP23S17":
-            self.select1 = not self.select1
+            if self.select0 == 0:
+                self.select0 = 1
+            else:
+                self.select0 = 0
+
             if self.select1:
                 self.b_s1_color = red
                 self.f_s1_color = white_ish
@@ -648,7 +649,6 @@ class delayProgramator_app(tk.Tk):
         self.set_left = 0
         self.set_right = 0
         self.select_index = 0
-        self.on_init = 0
 
         self.b_en_color = dark_gray
         self.f_en_color = white_ish
