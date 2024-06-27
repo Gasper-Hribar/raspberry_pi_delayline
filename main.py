@@ -222,7 +222,7 @@ class delayProgramator_app(tk.Tk):
             relief='flat')
 
         set_pulse.title('Set delay')
-        set_pulse.geometry(f'247x210+277+140')
+        set_pulse.geometry(f'247x210+200+140')
 
         pw = tk.Label(set_pulse,
             font=outputminifont,
