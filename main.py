@@ -105,11 +105,16 @@ class delayProgramator_app(tk.Tk):
                     del self.chip
                 except:
                     pass
-                rpi.write(self.CS, 0)
+                
                 self.chip = MCP23S17(0)
+                rpi.write(self.CS, 0)
                 rpi.spi_write(self.hspi, self.chip.setIO())
                 rpi.write(self.CS, 1)
                 time.sleep(0.1)
+                self.enable = 1
+                self.select0 = 1
+                self.select1 = 1
+                self.on_init = 1
 
                 """ Opening the line. Setting the delay to 0. """
                
@@ -134,9 +139,7 @@ class delayProgramator_app(tk.Tk):
                                     message="Selected chip has not been initialized.")
 
             if chip == "660 nm":
-                self.enable = 1
-                self.select0 = 1
-                self.select1 = 1
+                
                 self.b_en_color = red
                 self.f_en_color = white_ish
                 self.b_s0_color = red
@@ -182,10 +185,6 @@ class delayProgramator_app(tk.Tk):
                                      relief="flat")
         select_delayline_menu.place(relx=0.5,
                                     rely=0.12)
-        
-        """
-        MANJKA KODA!!!
-        """
 
         """MISCELLANEOUS BUTTONS"""
 
@@ -512,8 +511,15 @@ class delayProgramator_app(tk.Tk):
 
     def toggle_states(self):
         rpi.write(self.CS, 0)
-        rpi.spi_write(self.hspi, self.chip.set_bits(self.enable, self.select0, self.select1))
+        data = self.chip.set_bits(self.enable, self.select0, self.select1)
+        rpi.spi_write(self.hspi, data)
+        print(data)
         rpi.write(self.CS, 1)
+
+        if self.on_init == 1:
+            self.reset_delay(0)
+            self.reset_delay(1)
+            self.on_init = 0
         return
 
 
@@ -626,6 +632,7 @@ class delayProgramator_app(tk.Tk):
         self.set_left = 0
         self.set_right = 0
         self.select_index = 0
+        self.on_init = 0
 
         self.b_en_color = dark_gray
         self.f_en_color = white_ish
