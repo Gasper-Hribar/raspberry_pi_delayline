@@ -181,20 +181,20 @@ class MCP23S17(DelayLine):
         # print(f"Retval: {retval}, {bin(retval)}.")
 
         if side == 0:
-            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
+            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN0_BIT)
             # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.") 
         else:
-            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN0_BIT)
+            retval_latch = retval & (2**16 - 1 - 2**MCP23S17.LEN1_BIT)
             # print(f"Retval latch: {retval_latch}, {bin(retval_latch)}.")
 
-        first_byte = 0b01000000 | self.address << 1
-        second_byte = MCP23S17.GPIOA
-        third_byte = (retval >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
-        fourth_byte = retval & 255
-        fifth_byte = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
-        sixth_byte = retval_latch & 255
+        address_byte = 0b01000000 | self.address << 1
+        register_byte = MCP23S17.GPIOA
+        data_byte_3 = (retval >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
+        data_byte_2 = retval & 255
+        data_byte_1 = (retval_latch >> 8) & 255 | enable << 3 | sel0 << 6 | sel1 << 7
+        data_byte_0 = retval_latch & 255
         
-        return [first_byte, second_byte, sixth_byte, fifth_byte, first_byte, second_byte, fourth_byte, third_byte]
+        return [address_byte, register_byte, data_byte_0, data_byte_1, address_byte, register_byte, data_byte_2, data_byte_3]
        
 
     def __init__(self, address):

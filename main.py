@@ -112,22 +112,11 @@ class delayProgramator_app(tk.Tk):
                 time.sleep(0.1)
 
                 """ Opening the line. Setting the delay to 0. """
-                # rpi.write(self.CS, 0)
-                # rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[0:4])
-                # rpi.write(self.CS, 1)
-                # rpi.write(self.CS, 0)
-                # rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 0)[4:])
-                # rpi.write(self.CS, 1)
-                
-                # rpi.write(self.CS, 0)
-                # rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[0:4])
-                # rpi.write(self.CS, 1)
-                # rpi.write(self.CS, 0)
-                # rpi.spi_write(self.hspi, self.chip.calc_delay(0, 0, 1)[4:])
-                # rpi.write(self.CS, 1)
-
+               
                 self.reset_delay(0)
+                print("Reset left.")
                 self.reset_delay(1)
+                print("Reset right.")
 
                 self.select_index = 2
                 
@@ -527,18 +516,6 @@ class delayProgramator_app(tk.Tk):
         rpi.write(self.CS, 1)
         return
 
-    # def set_select_0(self):
-    #     rpi.write(self.CS, 0)
-    #     rpi.spi_write(self.chip.set_bit(self.select0, 6))
-    #     rpi.write(self.CS, 1)
-    #     return
-    
-    # def set_select_1(self):
-    #     rpi.write(self.CS, 0)
-    #     rpi.spi_write(self.chip.set_bit(self.select1, 7))
-
-    #     return
-
 
 ######
 ######
@@ -581,10 +558,9 @@ class delayProgramator_app(tk.Tk):
                 self.f_en_color = white_ish
             else:
                 self.b_en_color = red
-                self.f_en_color = space_blue
+                self.f_en_color = white_ish
 
             self.toggle_states()
-            # self.set_delay(1)
 
             self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color, activebackground=self.b_en_color, activeforeground=self.f_en_color)
             self.pw_label_left.focus_set()
@@ -597,13 +573,12 @@ class delayProgramator_app(tk.Tk):
             self.select0 = not self.select0
             if self.select0:
                 self.b_s0_color = red
-                self.f_s0_color = space_blue
+                self.f_s0_color = white_ish
             else:
                 self.b_s0_color = teal
                 self.f_s0_color = white_ish
             
             self.toggle_states()
-            # self.set_delay(1)
 
             self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color, activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
         else:
@@ -615,13 +590,12 @@ class delayProgramator_app(tk.Tk):
             self.select1 = not self.select1
             if self.select1:
                 self.b_s1_color = red
-                self.f_s1_color = space_blue
+                self.f_s1_color = white_ish
             else:
                 self.b_s1_color = teal
                 self.f_s1_color = white_ish
 
             self.toggle_states()
-            # self.set_delay(1)
 
             self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color, activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
         else:
