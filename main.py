@@ -482,6 +482,7 @@ class delayProgramator_app(tk.Tk):
                     print(f"SPI left: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
+                    time.sleep(0.001)
                     rpi.write(self.CS, 0)
                     rpi.spi_write(self.hspi, writeval[4:])
                     self.set_left = 0
@@ -491,6 +492,7 @@ class delayProgramator_app(tk.Tk):
                     print(f"SPI right: {[bin(x) for x in writeval]}.")
                     rpi.spi_write(self.hspi, writeval[0:4])
                     rpi.write(self.CS, 1)
+                    time.sleep(0.001)
                     rpi.write(self.CS, 0)
                     rpi.spi_write(self.hspi, writeval[4:])
                     self.set_right = 0
@@ -517,7 +519,9 @@ class delayProgramator_app(tk.Tk):
         rpi.write(self.CS, 1)
 
         if self.on_init == 1:
+            time.sleep(0.001)
             self.reset_delay(0)
+            time.sleep(0.001)
             self.reset_delay(1)
             self.on_init = 0
             print("on_init, check")
