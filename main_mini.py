@@ -241,10 +241,11 @@ class delayProgramator_app(tk.Tk):
                                           fg=black,
                                           justify='center',
                                           font=settingsfont)
-        select_delayline_msg.place(relx=0.06,
+        select_delayline_msg.place(relx=0.02,
                                    rely=0.16,
                                    relwidth=0.60,
-                                   relheight=0.08)
+                                   relheight=0.08,
+                                   anchor='center')
 
         """
         Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
