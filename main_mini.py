@@ -241,9 +241,9 @@ class delayProgramator_app(tk.Tk):
                                           fg=black,
                                           justify='center',
                                           font=settingsfont)
-        select_delayline_msg.place(relx=0.02,
+        select_delayline_msg.place(relx=0.32,
                                    rely=0.16,
-                                   relwidth=0.60,
+                                   relwidth=0.55,
                                    relheight=0.08,
                                    anchor='center')
 
