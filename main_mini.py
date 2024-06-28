@@ -242,7 +242,7 @@ class delayProgramator_app(tk.Tk):
                                           font=settingsfont)
         select_delayline_msg.place(relx=0.1,
                                    rely=0.16,
-                                   relwidth=0.3,
+                                   relwidth=0.40,
                                    relheight=0.08)
 
         """
