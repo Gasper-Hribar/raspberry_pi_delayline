@@ -236,13 +236,14 @@ class delayProgramator_app(tk.Tk):
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
                                           text="Select device:",
+                                          width=200,
                                           bg=light_gray,
                                           fg=black,
-                                          #justify='center',
+                                          justify='center',
                                           font=settingsfont)
         select_delayline_msg.place(relx=0.06,
                                    rely=0.16,
-                                   relwidth=0.50,
+                                   relwidth=0.60,
                                    relheight=0.08)
 
         """
@@ -257,7 +258,7 @@ class delayProgramator_app(tk.Tk):
                                             justify='center',
                                             text=selected_var.get(),
                                             command=select_chip_win)
-        select_delayline_button.place(relx=0.6,
+        select_delayline_button.place(relx=0.75,
                                       rely=0.16,
                                       anchor='center',
                                       relwidth=0.30,
