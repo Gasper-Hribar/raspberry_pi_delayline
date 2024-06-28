@@ -24,7 +24,7 @@ outputfont = "Lato 24 bold"
 outputminifont = "Lato 16 bold"
 normalminifont = "Lato 16"
 menufont = "Lato 16 bold"
-settingsfont = "Lato 16"
+settingsfont = "Lato 14"
 ampfont = "Lato 12"
 # END
 
@@ -237,7 +237,8 @@ class delayProgramator_app(tk.Tk):
                                           width=120,
                                           bg=light_gray,
                                           fg=black,
-                                          justify='center')
+                                          justify='center',
+                                          font=settingsfont)
         select_delayline_msg.place(relx=0.2,
                                    rely=0.16,
                                    anchor='center')
