@@ -238,7 +238,7 @@ class delayProgramator_app(tk.Tk):
                                           text="Select device:",
                                           bg=light_gray,
                                           fg=black,
-                                          justify='center',
+                                          #justify='center',
                                           font=settingsfont)
         select_delayline_msg.place(relx=0.06,
                                    rely=0.16,
