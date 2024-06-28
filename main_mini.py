@@ -664,8 +664,46 @@ class delayProgramator_app(tk.Tk):
         """
         DROP-DOWN MENU
 
-        V mini verziji pravi dropdown menu ni aktiven (bypass težav z zaslonom). Dodana sta dva gumba za dostop do nastavitev in izhod iz aplikacij
+        V mini verziji pravi dropdown menu ni aktiven (bypass težav z zaslonom). Dodana sta dva gumba za dostop do nastavitev in izhod iz aplikacij.
         """
+
+        self.menu = tk.Frame(self,
+                             width=f'{self.width*ptomm}m',
+                             height=f'{self.height*ptomm}m',
+                             relief='flat',
+                             bg=light_gray)
+        self.menu.place(relx=0,
+                        rely=0,
+                        relwidth=1,
+                        relheight=0.1)
+
+        self.settings_button = tk.Button(self.menu,
+                                         height=1,
+                                         fg=space_blue,
+                                         bg=light_gray,
+                                         font=menufont,
+                                         text="Settings",
+                                         relief='flat',
+                                         command= self.settings_page)
+        
+        self.exit_button = tk.Button(self.menu,
+                                     height=1,
+                                     fg=space_blue,
+                                     bg=light_gray,
+                                     font=menufont,
+                                     text="Exit",
+                                     relief='flat',
+                                     command= self.close_app)
+        
+        self.settings_button.place(relx=0.01,
+                                   rely=0,
+                                   relwidth=0.1,
+                                   relheight=1)
+        
+        self.exit_button.place(relx=0.12,
+                               rely=0,
+                               relwidth=0.1,
+                               relheight=1)
         # self.menu = tk.Menu(self, 
         #     bg=light_gray, 
         #     fg=space_blue, 
