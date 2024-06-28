@@ -727,9 +727,9 @@ class delayProgramator_app(tk.Tk):
                                          relief='flat',
                                          bg=light_gray)
         self.pulse_frame_left.place(relx=0.03,
-                                    rely=0.05,
+                                    rely=0.15,
                                     relwidth=0.35,
-                                    relheight=0.90)
+                                    relheight=0.75)
         
         self.pw_label_left = tk.Label(self.pulse_frame_left,
                                           text='DELAY LINE A',
@@ -779,9 +779,9 @@ class delayProgramator_app(tk.Tk):
                                          relief='flat',
                                          bg=light_gray)
         self.pulse_frame_right.place(relx=0.39,
-                                    rely=0.05,
+                                    rely=0.15,
                                     relwidth=0.35,
-                                    relheight=0.90)
+                                    relheight=0.75)
         
         self.pw_label_right = tk.Label(self.pulse_frame_right,
                                           text='DELAY LINE B',
@@ -832,9 +832,9 @@ class delayProgramator_app(tk.Tk):
                                             bg=light_gray
                                             )
         self.extra_buttons_frame.place(relx=0.75,
-                                       rely=0.05,
+                                       rely=0.15,
                                        relwidth=0.22,
-                                       relheight=0.90)
+                                       relheight=0.75)
         
         self.button_enable = tk.Button(self.extra_buttons_frame,
                                        height=2,
