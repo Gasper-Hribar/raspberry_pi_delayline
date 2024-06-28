@@ -108,7 +108,7 @@ class delayProgramator_app(tk.Tk):
                 
                 self.chip = MCP23S17(0)
                 rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.setIO(first=1))
+                rpi.spi_write(self.hspi, self.chip.setIO())
                 rpi.write(self.CS, 1)
                 time.sleep(0.1)
                 self.enable = 1
@@ -121,11 +121,6 @@ class delayProgramator_app(tk.Tk):
                 print("Reset left.")
                 self.reset_delay(1)
                 print("Reset right.")
-                rpi.write(self.CS, 0)
-                rpi.spi_write(self.hspi, self.chip.setIO(first=0))
-                rpi.write(self.CS, 1)
-                time.sleep(0.1)
-
 
                 self.select_index = 2
                 
@@ -668,20 +663,22 @@ class delayProgramator_app(tk.Tk):
 
         """
         DROP-DOWN MENU
-        """
-        self.menu = tk.Menu(self, 
-            bg=light_gray, 
-            fg=space_blue, 
-            activebackground=teal,
-            font=menufont)
 
-        self.config(menu=self.menu)
-        settsMenu = tk.Menu(self.menu)
-        exitMenu = tk.Menu(self.menu)
-        settsMenu.add_command(label='Settings', command=self.settings_page, font=menufont)
-        self.menu.add_cascade(label='Settings', menu=settsMenu)
-        exitMenu.add_command(label='Exit', command=self.close_app, background=red, font=menufont, activebackground=red)
-        self.menu.add_cascade(label='Exit', menu=exitMenu)
+        V mini verziji pravi dropdown menu ni aktiven (bypass težav z zaslonom). Dodana sta dva gumba za dostop do nastavitev in izhod iz aplikacij
+        """
+        # self.menu = tk.Menu(self, 
+        #     bg=light_gray, 
+        #     fg=space_blue, 
+        #     activebackground=teal,
+        #     font=menufont)
+
+        # self.config(menu=self.menu)
+        # settsMenu = tk.Menu(self.menu)
+        # exitMenu = tk.Menu(self.menu)
+        # settsMenu.add_command(label='Settings', command=self.settings_page, font=menufont)
+        # self.menu.add_cascade(label='Settings', menu=settsMenu)
+        # exitMenu.add_command(label='Exit', command=self.close_app, background=red, font=menufont, activebackground=red)
+        # self.menu.add_cascade(label='Exit', menu=exitMenu)
 
         """
         LEVA STRAN DELAY

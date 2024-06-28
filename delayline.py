@@ -144,16 +144,23 @@ class MCP23S17(DelayLine):
             ]
         return value
     
-    def setIO(self):
+    def setIO(self, first):
         """
         Returns a data packet to set all of GPIOs on MCP chip to outputs.
         """
 
-        value = [0b01000000 | self.address << 1,
-                 0b00000000,
-                 0b00000000,
-                 0b00000000
-                 ]  # value: first byte = address, second byte = 0, third and fourth bytes = bits for setting I/O (output = 0)
+        if first == 1:
+            value = [0b01000000 | self.address << 1,
+                     0b00000000,
+                     0b00000000,
+                     0b11000000
+                     ]
+        else:
+            value = [0b01000000 | self.address << 1,
+                    0b00000000,
+                    0b00000000,
+                    0b00000000
+                    ]  # value: first byte = address, second byte = 0, third and fourth bytes = bits for setting I/O (output = 0)
         return value
     
     
