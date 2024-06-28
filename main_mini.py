@@ -235,14 +235,14 @@ class delayProgramator_app(tk.Tk):
             return
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
-                                          text="Select device: ",
+                                          text="Select device:",
                                           bg=light_gray,
                                           fg=black,
                                           justify='center',
                                           font=settingsfont)
-        select_delayline_msg.place(relx=0.1,
+        select_delayline_msg.place(relx=0.06,
                                    rely=0.16,
-                                   relwidth=0.40,
+                                   relwidth=0.50,
                                    relheight=0.08)
 
         """
