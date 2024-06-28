@@ -148,8 +148,7 @@ class delayProgramator_app(tk.Tk):
                                relwidth=0.90,
                                relheight=0.30)
 
-            def chip_selected(chip):                
-                select_chip(chip)
+            def chip_selected(chip):
                 selected_var.set(chip)
                 select_delayline_button.config(text=selected_var.get())
                 cs_window.destroy()
@@ -231,7 +230,8 @@ class delayProgramator_app(tk.Tk):
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
                 self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
-
+            
+            setts_page.destroy()
             return
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
@@ -284,10 +284,10 @@ class delayProgramator_app(tk.Tk):
                              fg=white_ish,
                              font=settingsfont,
                              justify='center',
-                             text='back',
+                             text='OK',
                              width=3,
                              height=1,
-                             command=lambda: setts_page.destroy())
+                             command=lambda: select_chip(selected_var.get()))
         back_btn.place(relx=0.9, rely=0.9, anchor='center')
 
 
