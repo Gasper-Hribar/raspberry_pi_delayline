@@ -697,12 +697,12 @@ class delayProgramator_app(tk.Tk):
         
         self.settings_button.place(relx=0.01,
                                    rely=0,
-                                   relwidth=0.1,
+                                   relwidth=0.15,
                                    relheight=1)
         
-        self.exit_button.place(relx=0.12,
+        self.exit_button.place(relx=0.17,
                                rely=0,
-                               relwidth=0.1,
+                               relwidth=0.15,
                                relheight=1)
         # self.menu = tk.Menu(self, 
         #     bg=light_gray, 
