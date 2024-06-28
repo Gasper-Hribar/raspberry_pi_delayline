@@ -24,7 +24,7 @@ outputfont = "Lato 24 bold"
 outputminifont = "Lato 16 bold"
 normalminifont = "Lato 16"
 menufont = "Lato 16 bold"
-settingsfont = "Lato 14"
+settingsfont = "Lato 12"
 ampfont = "Lato 12"
 # END
 
@@ -150,6 +150,8 @@ class delayProgramator_app(tk.Tk):
 
             def chip_selected(chip):                
                 select_chip(chip)
+                selected_var.set(chip)
+                select_delayline_button.config(text=selected_var.get())
                 cs_window.destroy()
                 return
 
@@ -234,14 +236,14 @@ class delayProgramator_app(tk.Tk):
 
         select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
                                           text="Select device: ",
-                                          width=120,
                                           bg=light_gray,
                                           fg=black,
                                           justify='center',
                                           font=settingsfont)
-        select_delayline_msg.place(relx=0.2,
+        select_delayline_msg.place(relx=0.1,
                                    rely=0.16,
-                                   anchor='center')
+                                   relwidth=0.3,
+                                   relheight=0.08)
 
         """
         Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
