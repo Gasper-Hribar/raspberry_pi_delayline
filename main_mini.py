@@ -101,7 +101,7 @@ class delayProgramator_app(tk.Tk):
                                     relief='flat')
 
             cs_window.title('Select device')
-            cs_window.geometry('100x150+350+150')
+            cs_window.geometry('100x200+350+125')
 
             nochip_button = tk.Button(cs_window,
                                       bg=dark_gray,
@@ -132,21 +132,36 @@ class delayProgramator_app(tk.Tk):
                                      text='660 nm',
                                      command=lambda: chip_selected("660 nm")
                                      )
+            
+            nm520_button = tk.Button(cs_window,
+                                     bg=dark_gray,
+                                     fg=white_ish,
+                                     relief='flat',
+                                     font=settingsfont,
+                                     justify='center',
+                                     text='520 nm',
+                                     command=lambda: chip_selected("520 nm")
+                                     )
 
             nochip_button.place(relx=0.05,
                                 rely=0.03,
                                 relwidth=0.90,
-                                relheight=0.30)
+                                relheight=0.22)
 
             nm808_button.place(relx=0.05,
-                               rely=0.35,
+                               rely=0.27,
                                relwidth=0.90,
-                               relheight=0.30)
+                               relheight=0.22)
 
             nm660_button.place(relx=0.05,
-                               rely=0.67,
+                               rely=0.51,
                                relwidth=0.90,
-                               relheight=0.30)
+                               relheight=0.22)
+            
+            nm520_button.place(relx=0.05,
+                               rely=0.75,
+                               relwidth=0.90,
+                               relheight=0.22)
 
             def chip_selected(chip):
                 selected_var.set(chip)
@@ -191,6 +206,35 @@ class delayProgramator_app(tk.Tk):
 
                 self.select_index = 2
 
+            elif chip == "520 nm":
+                try:
+                    del self.chip
+                except:
+                    pass
+
+                self.chip = MCP23S17(0)
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.setIO(first=1))
+                rpi.write(self.CS, 1)
+                time.sleep(0.1)
+                self.enable = 1
+                self.select0 = 0  # HV enable
+                self.select1 = 0  # HV ON
+
+                """ Opening the line. Setting the delay to 0. """
+
+                self.reset_delay(0)
+                print("Reset left.")
+                self.reset_delay(1)
+                print("Reset right.")
+                rpi.write(self.CS, 0)
+                rpi.spi_write(self.hspi, self.chip.setIO(first=0))
+                rpi.write(self.CS, 1)
+                time.sleep(0.1)
+
+                self.select_index = 3
+
+
             elif chip == "Select":
                 try:
                     del self.chip
@@ -212,11 +256,25 @@ class delayProgramator_app(tk.Tk):
                 self.f_s1_color = white_ish
                 self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color,
                                           activebackground=self.b_en_color, activeforeground=self.f_en_color)
-                self.button_select0.config(fg=self.f_s0_color, bg=self.b_s0_color,
+                self.button_select0.config(text="Select 0", fg=self.f_s0_color, bg=self.b_s0_color,
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
-                self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color,
+                self.button_select1.config(text="Select 1", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
 
+            elif chip == "520 nm":
+                self.b_en_color = red
+                self.f_en_color = white_ish
+                self.b_s0_color = red
+                self.f_s0_color = white_ish
+                self.b_s1_color = red
+                self.f_s1_color = white_ish
+                self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color,
+                                          activebackground=self.b_en_color, activeforeground=self.f_en_color)
+                self.button_select0.config(text="HV EN", fg=self.f_s0_color, bg=self.b_s0_color,
+                                           activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
+                self.button_select1.config(text="HV ON", fg=self.f_s1_color, bg=self.b_s1_color,
+                                           activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
+                
             else:
                 self.b_en_color = dark_gray
                 self.f_en_color = white_ish
@@ -693,12 +751,21 @@ class delayProgramator_app(tk.Tk):
             else:
                 self.select0 = 0
 
-            if self.select0:
-                self.b_s0_color = red
-                self.f_s0_color = white_ish
-            else:
-                self.b_s0_color = teal
-                self.f_s0_color = white_ish
+            if self.select_index == 2:
+                if self.select0:
+                    self.b_s0_color = red
+                    self.f_s0_color = white_ish
+                else:
+                    self.b_s0_color = teal
+                    self.f_s0_color = white_ish
+
+            elif self.select_index == 3:
+                if self.select0:
+                    self.b_s0_color = teal
+                    self.f_s0_color = white_ish
+                else:
+                    self.b_s0_color = red
+                    self.f_s0_color = white_ish
 
             self.toggle_states()
 
@@ -713,13 +780,22 @@ class delayProgramator_app(tk.Tk):
                 self.select1 = 1
             else:
                 self.select1 = 0
+            
+            if self.select_index == 2:
+                if self.select1:
+                    self.b_s1_color = red
+                    self.f_s1_color = white_ish
+                else:
+                    self.b_s1_color = teal
+                    self.f_s1_color = white_ish
 
-            if self.select1:
-                self.b_s1_color = red
-                self.f_s1_color = white_ish
-            else:
-                self.b_s1_color = teal
-                self.f_s1_color = white_ish
+            elif self.select_index == 3:
+                if self.select1:
+                    self.b_s1_color = teal
+                    self.f_s1_color = white_ish
+                else:
+                    self.b_s1_color = red
+                    self.f_s1_color = white_ish
 
             self.toggle_states()
 
@@ -806,7 +882,7 @@ class delayProgramator_app(tk.Tk):
                                    relwidth=0.15,
                                    relheight=1)
 
-        self.exit_button.place(relx=0.17,
+        self.exit_button.place(relx=0.83,
                                rely=0,
                                relwidth=0.15,
                                relheight=1)
