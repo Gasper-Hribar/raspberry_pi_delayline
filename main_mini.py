@@ -269,10 +269,19 @@ class delayProgramator_app(tk.Tk):
                 self.f_s1_color = white_ish
                 self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color,
                                           activebackground=self.b_en_color, activeforeground=self.f_en_color)
-                self.button_select0.config(text="Select 0", fg=self.f_s0_color, bg=self.b_s0_color,
+                self.button_select0.config(text="SELECT 0", fg=self.f_s0_color, bg=self.b_s0_color,
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
-                self.button_select1.config(text="Select 1", fg=self.f_s1_color, bg=self.b_s1_color,
+                self.button_select1.config(text="SSELECT 1", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
+                self.button_select0.place(relx=0.5,
+                                      rely=0.5,
+                                      relwidth=0.8,
+                                      anchor='center')
+
+                self.button_select1.place(relx=0.5,
+                                        rely=0.75,
+                                        relwidth=0.8,
+                                        anchor='center')
 
             elif chip == "520 nm":
                 self.b_en_color = red
