@@ -298,6 +298,17 @@ class delayProgramator_app(tk.Tk):
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
                 self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
+                
+                self.button_select0.place(relx=0.5,
+                                      rely=0.5,
+                                      relwidth=0.8,
+                                      anchor='center')
+
+                self.button_select1.place(relx=0.5,
+                                        rely=0.75,
+                                        relwidth=0.8,
+                                        anchor='center')
+
 
             setts_page.destroy()
             return
