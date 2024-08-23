@@ -65,7 +65,7 @@ class delayProgramator_app(tk.Tk):
         """Closes the app."""
         if self.hspi:
             rpi.spi_close(self.hspi)
-        self.destroy()
+        # self.quit()
         sys.exit()
 
     def update_widgets(self):
@@ -270,9 +270,9 @@ class delayProgramator_app(tk.Tk):
                 self.f_s1_color = white_ish
                 self.button_enable.config(fg=self.f_en_color, bg=self.b_en_color,
                                           activebackground=self.b_en_color, activeforeground=self.f_en_color)
-                self.button_select0.config(text="HV EN", fg=self.f_s0_color, bg=self.b_s0_color,
+                self.button_select0.config(text="HV ON", fg=self.f_s0_color, bg=self.b_s0_color,
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
-                self.button_select1.config(text="HV ON", fg=self.f_s1_color, bg=self.b_s1_color,
+                self.button_select1.config(text="HV EN", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
 
                 self.button_select0.place(relx=0.5,
