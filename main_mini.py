@@ -65,7 +65,8 @@ class delayProgramator_app(tk.Tk):
         """Closes the app."""
         if self.hspi:
             rpi.spi_close(self.hspi)
-        self.quit()
+        self.destroy()
+        sys.exit()
 
     def update_widgets(self):
         self.pw_button_left['text'] = self.pw_str_left.get()
@@ -132,7 +133,7 @@ class delayProgramator_app(tk.Tk):
                                      text='660 nm',
                                      command=lambda: chip_selected("660 nm")
                                      )
-            
+
             nm520_button = tk.Button(cs_window,
                                      bg=dark_gray,
                                      fg=white_ish,
@@ -157,7 +158,7 @@ class delayProgramator_app(tk.Tk):
                                rely=0.51,
                                relwidth=0.90,
                                relheight=0.22)
-            
+
             nm520_button.place(relx=0.05,
                                rely=0.75,
                                relwidth=0.90,
@@ -234,7 +235,6 @@ class delayProgramator_app(tk.Tk):
 
                 self.select_index = 3
 
-
             elif chip == "Select":
                 try:
                     del self.chip
@@ -274,7 +274,7 @@ class delayProgramator_app(tk.Tk):
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
                 self.button_select1.config(text="HV ON", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
-                
+
             else:
                 self.b_en_color = dark_gray
                 self.f_en_color = white_ish
@@ -288,7 +288,7 @@ class delayProgramator_app(tk.Tk):
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
                 self.button_select1.config(fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
-            
+
             setts_page.destroy()
             return
 
@@ -353,7 +353,6 @@ class delayProgramator_app(tk.Tk):
 ######
 ######
 # DELAY SETTINGS POP-UP WINDOW
-
 
     def set_delayval(self, num):
         "Displays a new Toplevel window in which user sets the pulse width."
@@ -598,7 +597,6 @@ class delayProgramator_app(tk.Tk):
 ######
 # SET DELAY FUNCTION
 
-
     def set_delay(self, num):
 
         try:
@@ -693,7 +691,6 @@ class delayProgramator_app(tk.Tk):
 ######
 # RESET DELAY FUNCTION
 
-
     def reset_delay(self, num):
         """ Resetting the delays to 0."""
         if num == 0:
@@ -780,7 +777,7 @@ class delayProgramator_app(tk.Tk):
                 self.select1 = 1
             else:
                 self.select1 = 0
-            
+
             if self.select_index == 2:
                 if self.select1:
                     self.b_s1_color = red
@@ -809,7 +806,6 @@ class delayProgramator_app(tk.Tk):
 ######
 ######
 # CREATE WIDGETS FUNCTION
-
 
     def create_widgets(self):
         """      
@@ -1031,10 +1027,6 @@ class delayProgramator_app(tk.Tk):
                                        activebackground=self.b_en_color,
                                        activeforeground=self.f_en_color,
                                        command=lambda: self.toggle_enable())
-        self.button_enable.place(relx=0.5,
-                                 rely=0.25,
-                                 relwidth=0.8,
-                                 anchor='center')
 
         self.button_select0 = tk.Button(self.extra_buttons_frame,
                                         height=2,
@@ -1049,10 +1041,6 @@ class delayProgramator_app(tk.Tk):
                                         activebackground=self.b_s0_color,
                                         activeforeground=self.f_s0_color,
                                         command=lambda: self.toggle_select0())
-        self.button_select0.place(relx=0.5,
-                                  rely=0.5,
-                                  relwidth=0.8,
-                                  anchor='center')
 
         self.button_select1 = tk.Button(self.extra_buttons_frame,
                                         height=2,
@@ -1067,10 +1055,32 @@ class delayProgramator_app(tk.Tk):
                                         activebackground=self.b_s1_color,
                                         activeforeground=self.f_s1_color,
                                         command=lambda: self.toggle_select1())
-        self.button_select1.place(relx=0.5,
-                                  rely=0.75,
-                                  relwidth=0.8,
-                                  anchor='center')
+
+        self.button_enable.place(relx=0.5,
+                                 rely=0.25,
+                                 relwidth=0.8,
+                                 anchor='center')
+
+        if self.select_index == 3:
+            self.button_select0.place(relx=0.5,
+                                      rely=0.75,
+                                      relwidth=0.8,
+                                      anchor='center')
+
+            self.button_select1.place(relx=0.5,
+                                      rely=0.5,
+                                      relwidth=0.8,
+                                      anchor='center')
+
+        else:
+            self.button_select0.place(relx=0.5,
+                                      rely=0.5,
+                                      relwidth=0.8,
+                                      anchor='center')
+            self.button_select1.place(relx=0.5,
+                                      rely=0.75,
+                                      relwidth=0.8,
+                                      anchor='center')
 
         return
 
