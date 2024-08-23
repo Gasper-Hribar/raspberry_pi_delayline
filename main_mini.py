@@ -94,6 +94,63 @@ class delayProgramator_app(tk.Tk):
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
+        select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
+                                          text="Select device:",
+                                          width=200,
+                                          bg=light_gray,
+                                          fg=black,
+                                          justify='center',
+                                          font=settingsfont)
+        select_delayline_msg.place(relx=0.32,
+                                   rely=0.16,
+                                   relwidth=0.55,
+                                   relheight=0.08,
+                                   anchor='center')
+        
+        
+        """
+        Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
+        """
+
+        select_delayline_button = tk.Button(setts_page,
+                                            bg=light_gray,
+                                            fg=space_blue,
+                                            font=settingsfont,
+                                            relief='flat',
+                                            justify='center',
+                                            text=selected_var.get(),
+                                            command=select_chip_win)
+        select_delayline_button.place(relx=0.75,
+                                      rely=0.16,
+                                      anchor='center',
+                                      relwidth=0.30,
+                                      relheight=0.08)
+
+        # select_delayline_menu = tk.OptionMenu(setts_page,
+        #                                       selected_var,
+        #                                       *options,
+        #                                       command=select_chip)
+        # select_delayline_menu.config(bg=light_gray,
+        #                              fg=space_blue,
+        #                              borderwidth=0,
+        #                              border=0,
+        #                              relief="flat")
+        # select_delayline_menu.place(relx=0.5,
+        #                             rely=0.12)
+
+        """MISCELLANEOUS BUTTONS"""
+
+        ok_btn = tk.Button(setts_page,
+                             bg=red,
+                             fg=white_ish,
+                             font=settingsfont,
+                             justify='center',
+                             text='OK',
+                             width=3,
+                             height=1,
+                             command=lambda: select_chip(selected_var.get()))
+        ok_btn.place(relx=0.9, rely=0.9, anchor='center')
+
         def select_chip_win():
 
             cs_window = tk.Toplevel(setts_page,
@@ -219,8 +276,8 @@ class delayProgramator_app(tk.Tk):
                 rpi.write(self.CS, 1)
                 time.sleep(0.1)
                 self.enable = 1
-                self.select0 = 0  # HV enable
-                self.select1 = 0  # HV ON
+                self.select0 = 0  # HV ON
+                self.select1 = 0  # HV EN
 
                 """ Opening the line. Setting the delay to 0. """
 
@@ -313,63 +370,7 @@ class delayProgramator_app(tk.Tk):
             setts_page.destroy()
             return
 
-        select_delayline_msg = tk.Message(setts_page,  # toggle auto detection message
-                                          text="Select device:",
-                                          width=200,
-                                          bg=light_gray,
-                                          fg=black,
-                                          justify='center',
-                                          font=settingsfont)
-        select_delayline_msg.place(relx=0.32,
-                                   rely=0.16,
-                                   relwidth=0.55,
-                                   relheight=0.08,
-                                   anchor='center')
-
-        """
-        Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
-        """
-
-        select_delayline_button = tk.Button(setts_page,
-                                            bg=light_gray,
-                                            fg=space_blue,
-                                            font=settingsfont,
-                                            relief='flat',
-                                            justify='center',
-                                            text=selected_var.get(),
-                                            command=select_chip_win)
-        select_delayline_button.place(relx=0.75,
-                                      rely=0.16,
-                                      anchor='center',
-                                      relwidth=0.30,
-                                      relheight=0.08)
-
-        # select_delayline_menu = tk.OptionMenu(setts_page,
-        #                                       selected_var,
-        #                                       *options,
-        #                                       command=select_chip)
-        # select_delayline_menu.config(bg=light_gray,
-        #                              fg=space_blue,
-        #                              borderwidth=0,
-        #                              border=0,
-        #                              relief="flat")
-        # select_delayline_menu.place(relx=0.5,
-        #                             rely=0.12)
-
-        """MISCELLANEOUS BUTTONS"""
-
-        back_btn = tk.Button(setts_page,
-                             bg=red,
-                             fg=white_ish,
-                             font=settingsfont,
-                             justify='center',
-                             text='OK',
-                             width=3,
-                             height=1,
-                             command=lambda: select_chip(selected_var.get()))
-        back_btn.place(relx=0.9, rely=0.9, anchor='center')
-
-
+        
 ######
 ######
 ######
