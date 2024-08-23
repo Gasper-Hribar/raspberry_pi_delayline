@@ -271,7 +271,7 @@ class delayProgramator_app(tk.Tk):
                                           activebackground=self.b_en_color, activeforeground=self.f_en_color)
                 self.button_select0.config(text="SELECT 0", fg=self.f_s0_color, bg=self.b_s0_color,
                                            activebackground=self.b_s0_color, activeforeground=self.f_s0_color)
-                self.button_select1.config(text="SSELECT 1", fg=self.f_s1_color, bg=self.b_s1_color,
+                self.button_select1.config(text="SELECT 1", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
                 self.button_select0.place(relx=0.5,
                                       rely=0.5,
