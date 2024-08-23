@@ -106,50 +106,6 @@ class delayProgramator_app(tk.Tk):
                                    relwidth=0.55,
                                    relheight=0.08,
                                    anchor='center')
-        
-        
-        """
-        Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
-        """
-
-        select_delayline_button = tk.Button(setts_page,
-                                            bg=light_gray,
-                                            fg=space_blue,
-                                            font=settingsfont,
-                                            relief='flat',
-                                            justify='center',
-                                            text=selected_var.get(),
-                                            command=select_chip_win)
-        select_delayline_button.place(relx=0.75,
-                                      rely=0.16,
-                                      anchor='center',
-                                      relwidth=0.30,
-                                      relheight=0.08)
-
-        # select_delayline_menu = tk.OptionMenu(setts_page,
-        #                                       selected_var,
-        #                                       *options,
-        #                                       command=select_chip)
-        # select_delayline_menu.config(bg=light_gray,
-        #                              fg=space_blue,
-        #                              borderwidth=0,
-        #                              border=0,
-        #                              relief="flat")
-        # select_delayline_menu.place(relx=0.5,
-        #                             rely=0.12)
-
-        """MISCELLANEOUS BUTTONS"""
-
-        ok_btn = tk.Button(setts_page,
-                             bg=red,
-                             fg=white_ish,
-                             font=settingsfont,
-                             justify='center',
-                             text='OK',
-                             width=3,
-                             height=1,
-                             command=lambda: select_chip(selected_var.get()))
-        ok_btn.place(relx=0.9, rely=0.9, anchor='center')
 
         def select_chip_win():
 
@@ -371,6 +327,50 @@ class delayProgramator_app(tk.Tk):
             return
 
         
+        """
+        Mini verzija namesto drop-down menujev uporablja le gumbe in okna.
+        """
+
+        select_delayline_button = tk.Button(setts_page,
+                                            bg=light_gray,
+                                            fg=space_blue,
+                                            font=settingsfont,
+                                            relief='flat',
+                                            justify='center',
+                                            text=selected_var.get(),
+                                            command=select_chip_win)
+        select_delayline_button.place(relx=0.75,
+                                      rely=0.16,
+                                      anchor='center',
+                                      relwidth=0.30,
+                                      relheight=0.08)
+
+        # select_delayline_menu = tk.OptionMenu(setts_page,
+        #                                       selected_var,
+        #                                       *options,
+        #                                       command=select_chip)
+        # select_delayline_menu.config(bg=light_gray,
+        #                              fg=space_blue,
+        #                              borderwidth=0,
+        #                              border=0,
+        #                              relief="flat")
+        # select_delayline_menu.place(relx=0.5,
+        #                             rely=0.12)
+
+        """MISCELLANEOUS BUTTONS"""
+
+        ok_btn = tk.Button(setts_page,
+                             bg=red,
+                             fg=white_ish,
+                             font=settingsfont,
+                             justify='center',
+                             text='OK',
+                             width=3,
+                             height=1,
+                             command=lambda: select_chip(selected_var.get()))
+        ok_btn.place(relx=0.9, rely=0.9, anchor='center')
+
+
 ######
 ######
 ######
