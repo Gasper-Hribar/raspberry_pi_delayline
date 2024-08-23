@@ -275,6 +275,16 @@ class delayProgramator_app(tk.Tk):
                 self.button_select1.config(text="HV ON", fg=self.f_s1_color, bg=self.b_s1_color,
                                            activebackground=self.b_s1_color, activeforeground=self.f_s1_color)
 
+                self.button_select0.place(relx=0.5,
+                                      rely=0.75,
+                                      relwidth=0.8,
+                                      anchor='center')
+
+                self.button_select1.place(relx=0.5,
+                                        rely=0.5,
+                                        relwidth=0.8,
+                                        anchor='center')
+
             else:
                 self.b_en_color = dark_gray
                 self.f_en_color = white_ish
