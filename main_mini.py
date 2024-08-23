@@ -90,7 +90,7 @@ class delayProgramator_app(tk.Tk):
         setts_page.title('Settings')
         setts_page.geometry('500x300+150+50')
 
-        options = ["Select", "808 nm", "660 nm"]
+        options = ["Select", "808 nm", "660 nm", "520 nm"]
         selected_var = tk.StringVar(setts_page)
         selected_var.set(options[self.select_index])
 
@@ -344,18 +344,6 @@ class delayProgramator_app(tk.Tk):
                                       anchor='center',
                                       relwidth=0.30,
                                       relheight=0.08)
-
-        # select_delayline_menu = tk.OptionMenu(setts_page,
-        #                                       selected_var,
-        #                                       *options,
-        #                                       command=select_chip)
-        # select_delayline_menu.config(bg=light_gray,
-        #                              fg=space_blue,
-        #                              borderwidth=0,
-        #                              border=0,
-        #                              relief="flat")
-        # select_delayline_menu.place(relx=0.5,
-        #                             rely=0.12)
 
         """MISCELLANEOUS BUTTONS"""
 
