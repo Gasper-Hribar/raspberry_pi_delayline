@@ -1133,8 +1133,11 @@ class delayProgramator_app(tk.Tk):
         # GUI
         self.title('Delay Line Programator')
         # app window starts in borderless fullscreen mode
-        self.wm_attributes("-fullscreen", True)
         self.geometry("800x480+0+0")
+        try:
+            self.attributes("-fullscreen", True)
+        except:
+            pass
         self.bind("<F11>", lambda event: self.attributes(
             "-fullscreen", not self.attributes("-fullscreen")))
         # keyboard key bindings for exiting fullscreen mode
